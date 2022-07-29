@@ -2,6 +2,8 @@ import express, {Express} from "express";
 import {ApolloServer, ExpressContext} from "apollo-server-express";
 import {ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault} from "apollo-server-core";
 import http, {Server as httpServer} from 'http';
+import {readFileSync} from "fs";
+import path from "path";
 
 export class Server
 {
@@ -17,7 +19,7 @@ export class Server
         this.httpServer = http.createServer(this.expressApplication);
 
         this.apolloServer = new ApolloServer<ExpressContext>({
-            typeDefs: "type Query { hello: String }",
+            typeDefs: readFileSync(path.join(__dirname, "..", "sections", "root", "GraphQL", "combined.graphql")).toString("utf-8"),
             resolvers: {},
             csrfPrevention: true,
             cache: "bounded",

@@ -7,7 +7,8 @@
     "start": "ts-node index.ts --watch",
     "test": "jest --verbose=true",
     "seed": "ts-node source/development/seed/seed.ts",
-    "quality": "ts-node source/development/quality/quality.ts"
+    "quality": "ts-node source/development/quality/quality.ts",
+    "combine-schemas": "ts-node source/development/GraphQL/combine-schemas.ts"
   },
   "repository": {
     "type": "git",

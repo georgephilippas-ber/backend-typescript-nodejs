@@ -1,0 +1,12 @@
+type Agent
+{
+    id: ID
+
+    username: String
+    email: String
+}
+
+input CreateAgent
+{
+    credentials: [String!]!
+}
