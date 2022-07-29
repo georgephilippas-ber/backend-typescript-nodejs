@@ -5,9 +5,9 @@ export class AgentCreate
 {
     credentials!: [string, string, string, string?]
 
-    validate(): boolean
+    static validate(agentCreate: AgentCreate): boolean
     {
-        const criteria = [isArray(this.credentials), isBetween(this.credentials.length, 3, 4), this.credentials.every(value => value), isEmail(this.credentials[1])];
+        const criteria = [isArray(agentCreate.credentials), isBetween(agentCreate.credentials.length, 3, 4), agentCreate.credentials.every(value => value), isEmail(agentCreate.credentials[1])];
 
         return criteria.every(value => value);
     }
