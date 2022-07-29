@@ -7,7 +7,7 @@ export class Encryption
         return createHash("md5").update(passkey).digest("hex");
     }
 
-    static async hashPassword_generateSalt(password: string, saltLength_bytes: number = 0x10, separator: string = "&"): Promise<string>
+    static async hashPassword_generateSalt(password: string, hashLength_bytes: number, saltLength_bytes: number = 0x10, separator: string = "&"): Promise<string>
     {
         const salt: Buffer = randomBytes(saltLength_bytes);
 
@@ -29,7 +29,7 @@ export class Encryption
         else
             return new Promise<boolean>(resolve =>
             {
-                scrypt(password, salt, 0x20, (err, derivedKey) =>
+                scrypt(password, salt, Buffer.from(pure).length, (err, derivedKey) =>
                 {
                     resolve(derivedKey.toString("hex") === pure)
                 });

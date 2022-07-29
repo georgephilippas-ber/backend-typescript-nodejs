@@ -1,5 +1,5 @@
-import {AgentsManager} from "../../services/agents/agents-manager";
-import {DataProvider} from "../../fundamental/data-provider";
+import {AgentsManager} from "../../sections/agents/managers/agents-manager";
+import {DataProvider} from "../../model/data-provider";
 import {randomBytes} from "crypto";
 
 let agentsManager = new AgentsManager(new DataProvider());

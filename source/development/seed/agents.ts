@@ -1,7 +1,7 @@
-import {DataProvider} from "../../fundamental/data-provider";
-import {AgentsManager} from "../../services/agents/agents-manager";
+import {DataProvider} from "../../model/data-provider";
+import {AgentsManager} from "../../sections/agents/managers/agents-manager";
 import {faker} from "@faker-js/faker";
-import {AgentCreate} from "../../services/agents/data-transfer-object/data-transfer-object";
+import {dtoCreateAgent} from "../../sections/agents/data-transfer-object/data-transfer-object";
 
 export async function seed(cardinality: number)
 {
@@ -13,7 +13,7 @@ export async function seed(cardinality: number)
     {
         const forename = faker.name.firstName("female"), surname = faker.name.lastName("female");
 
-        let agentCreate: AgentCreate = {credentials: [faker.internet.userName(forename, surname).toLowerCase(), faker.internet.email(forename, surname).toLowerCase(), faker.internet.password(0x10, true).toLowerCase(), faker.lorem.words(0x04)]};
+        let agentCreate: dtoCreateAgent = {credentials: [faker.internet.userName(forename, surname).toLowerCase(), faker.internet.email(forename, surname).toLowerCase(), faker.internet.password(0x10, true).toLowerCase(), faker.lorem.words(0x04)]};
 
         console.log(agentCreate.credentials);
 

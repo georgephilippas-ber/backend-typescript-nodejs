@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgentsManager = void 0;
-const data_transfer_object_1 = require("./data-transfer-object/data-transfer-object");
-const encryption_1 = require("../../fundamental/encryption/encryption");
+const data_transfer_object_1 = require("../data-transfer-object/data-transfer-object");
+const encryption_1 = require("../../../model/encryption/encryption");
 const class_validator_1 = require("class-validator");
 const crypto_1 = require("crypto");
 class AgentsManager {
