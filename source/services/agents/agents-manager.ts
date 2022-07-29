@@ -1,8 +1,10 @@
 import {DataProvider} from "../../fundamental/data-provider";
 
-import {Agent} from "@prisma/client";
+import {Agent, Prisma} from "@prisma/client";
 
 import {AgentCreate} from "./data-transfer-object/data-transfer-object";
+
+import {Encryption} from "../../fundamental/encryption/encryption";
 
 export class AgentsManager
 {
@@ -22,25 +24,21 @@ export class AgentsManager
         {
             case 3:
             case 4:
-                const candidateAgent =
+                const candidateAgent: Prisma.AgentUncheckedCreateInput =
                     {
                         username: agentCreate.credentials[0],
                         email: agentCreate.credentials[1],
-                        password: agentCreate.credentials[2],
-                        passkey: agentCreate.credentials[3] ?? null
+                        password: await Encryption.hashPassword(agentCreate.credentials[2]),
                     };
+
+                if (agentCreate.credentials[3])
+                    candidateAgent.passkey = Encryption.hashPasskey(agentCreate.credentials[3]);
 
                 return this.dataProvider.fromPrisma().agent.create({
                     data: candidateAgent
                 });
             default:
                 return undefined;
-
         }
-    }
-
-    validate_byPassword(credentials: string[])
-    {
-
     }
 }

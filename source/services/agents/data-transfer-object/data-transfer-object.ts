@@ -7,7 +7,7 @@ export class AgentCreate
 
     validate(): boolean
     {
-        const criteria = [isArray(this.credentials), isBetween(this.credentials.length, 3, 4), isEmail(this.credentials[1])];
+        const criteria = [isArray(this.credentials), isBetween(this.credentials.length, 3, 4), this.credentials.every(value => value), isEmail(this.credentials[1])];
 
         return criteria.every(value => value);
     }
