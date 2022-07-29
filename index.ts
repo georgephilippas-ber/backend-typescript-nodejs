@@ -1,20 +1,54 @@
-import Fastify, {FastifyInstance} from "fastify";
+import {ApolloServer, ExpressContext} from 'apollo-server-express';
+import {ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault,} from 'apollo-server-core';
+
+import express, {Express} from 'express';
+
+import http, {Server as httpServer} from 'http';
 
 class Server
 {
-    fastify: FastifyInstance
+    expressApplication: Express;
+
+    httpServer: httpServer;
+    apolloServer: ApolloServer;
 
     constructor()
     {
-        this.fastify = Fastify();
+        this.expressApplication = express();
+
+        this.httpServer = http.createServer(this.expressApplication);
+
+        this.apolloServer = new ApolloServer<ExpressContext>({
+            typeDefs: "type Query { hello: String }",
+            resolvers: {},
+            csrfPrevention: true,
+            cache: "bounded",
+            plugins: [ApolloServerPluginDrainHttpServer({httpServer: this.httpServer}), ApolloServerPluginLandingPageLocalDefault({embed: true})]
+        });
     }
 
-    listen(port: number = 4000)
+    async start(port: number = 0x1000): Promise<ApolloServer>
     {
-        this.fastify.listen({port}).then(value => console.log(value));
+        await this.apolloServer.start();
+
+        this.apolloServer.applyMiddleware({
+            app: this.expressApplication,
+        });
+
+        return new Promise<ApolloServer>(resolve =>
+        {
+            this.httpServer.listen({port}, () => resolve(this.apolloServer))
+        });
+    }
+
+    static createAndStart(port: number = 0x1000): Server
+    {
+        let apolloServer = new Server();
+
+        apolloServer.start(port).then(value => console.log(["http://localhost", ":", port, value.graphqlPath].join("")));
+
+        return apolloServer;
     }
 }
 
-const server = new Server();
-
-server.listen();
+Server.createAndStart();

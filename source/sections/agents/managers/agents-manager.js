@@ -14,13 +14,14 @@ const data_transfer_object_1 = require("../data-transfer-object/data-transfer-ob
 const encryption_1 = require("../../../model/encryption/encryption");
 const class_validator_1 = require("class-validator");
 const crypto_1 = require("crypto");
+const configuration_1 = require("../../../configuration/configuration");
 class AgentsManager {
     constructor(dataProvider) {
         this.dataProvider = dataProvider;
     }
     create(agentCreate) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!data_transfer_object_1.AgentCreate.validate(agentCreate))
+            if (!data_transfer_object_1.dtoCreateAgent.validate(agentCreate))
                 return undefined;
             switch (agentCreate.credentials.length) {
                 case 3:
@@ -28,7 +29,7 @@ class AgentsManager {
                     const candidateAgent = {
                         username: agentCreate.credentials[0],
                         email: agentCreate.credentials[1],
-                        password: yield encryption_1.Encryption.hashPassword_generateSalt(agentCreate.credentials[2]),
+                        password: yield encryption_1.Encryption.hashPassword_generateSalt(agentCreate.credentials[2], (0, configuration_1.configuration)().authentication.hashLength_bytes),
                     };
                     if (agentCreate.credentials[3])
                         candidateAgent.passkey = encryption_1.Encryption.hashPasskey(agentCreate.credentials[3]);
@@ -38,6 +39,19 @@ class AgentsManager {
                 default:
                     return undefined;
             }
+        });
+    }
+    delete(agentDelete) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!data_transfer_object_1.dtoDeleteAgent.validate(agentDelete))
+                return null;
+            if ((0, class_validator_1.isEmail)(agentDelete.credential)) {
+                return this.dataProvider.fromPrisma().agent.delete({ where: { email: agentDelete.credential } });
+            }
+            if (agentDelete.credential.length <= (0, configuration_1.configuration)().authentication.maximumUsernameLength_characters) {
+                return this.dataProvider.fromPrisma().agent.delete({ where: { username: agentDelete.credential } });
+            }
+            return this.dataProvider.fromPrisma().agent.delete({ where: { passkey: (0, crypto_1.createHash)("md5").update(agentDelete.credential).digest("hex") } });
         });
     }
     byAssociation(association) {

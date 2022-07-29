@@ -15,7 +15,7 @@ class Encryption {
     static hashPasskey(passkey) {
         return (0, crypto_1.createHash)("md5").update(passkey).digest("hex");
     }
-    static hashPassword_generateSalt(password, saltLength_bytes = 0x10, separator = "&") {
+    static hashPassword_generateSalt(password, hashLength_bytes, saltLength_bytes = 0x10, separator = "&") {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = (0, crypto_1.randomBytes)(saltLength_bytes);
             return new Promise(resolve => {
@@ -32,7 +32,7 @@ class Encryption {
                 return false;
             else
                 return new Promise(resolve => {
-                    (0, crypto_1.scrypt)(password, salt, 0x20, (err, derivedKey) => {
+                    (0, crypto_1.scrypt)(password, salt, Buffer.from(pure).length, (err, derivedKey) => {
                         resolve(derivedKey.toString("hex") === pure);
                     });
                 });
