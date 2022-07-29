@@ -17,3 +17,4 @@ function seed(agentsCardinality = 0x02) {
     });
 }
 exports.seed = seed;
+seed();

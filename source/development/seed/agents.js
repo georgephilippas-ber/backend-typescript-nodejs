@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
-const data_provider_1 = require("../data-provider");
+const data_provider_1 = require("../../fundamental/data-provider");
 const agents_manager_1 = require("../../services/agents/agents-manager");
 const faker_1 = require("@faker-js/faker");
 function seed(cardinality) {

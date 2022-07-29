@@ -6,6 +6,7 @@ import {AgentCreate} from "./data-transfer-object/data-transfer-object";
 
 import {Encryption} from "../../fundamental/encryption/encryption";
 import {isEmail} from "class-validator";
+import {createHash} from "crypto";
 
 export class AgentsManager
 {
@@ -52,7 +53,7 @@ export class AgentsManager
 
     async byPasskey(passkey: string): Promise<Agent | null>
     {
-        let where = {passkey};
+        let where = {passkey: createHash("md5").update(passkey).digest("hex")};
 
         return this.dataProvider.fromPrisma().agent.findUnique({where});
     }

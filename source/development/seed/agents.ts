@@ -1,4 +1,4 @@
-import {DataProvider} from "../data-provider";
+import {DataProvider} from "../../fundamental/data-provider";
 import {AgentsManager} from "../../services/agents/agents-manager";
 import {faker} from "@faker-js/faker";
 import {AgentCreate} from "../../services/agents/data-transfer-object/data-transfer-object";

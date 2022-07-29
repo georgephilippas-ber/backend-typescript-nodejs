@@ -13,6 +13,7 @@ exports.AgentsManager = void 0;
 const data_transfer_object_1 = require("./data-transfer-object/data-transfer-object");
 const encryption_1 = require("../../fundamental/encryption/encryption");
 const class_validator_1 = require("class-validator");
+const crypto_1 = require("crypto");
 class AgentsManager {
     constructor(dataProvider) {
         this.dataProvider = dataProvider;
@@ -47,7 +48,7 @@ class AgentsManager {
     }
     byPasskey(passkey) {
         return __awaiter(this, void 0, void 0, function* () {
-            let where = { passkey };
+            let where = { passkey: (0, crypto_1.createHash)("md5").update(passkey).digest("hex") };
             return this.dataProvider.fromPrisma().agent.findUnique({ where });
         });
     }
