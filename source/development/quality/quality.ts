@@ -1,7 +1,7 @@
 import {DataProvider} from "../../model/data-provider";
 
 import {AgentsManager} from "../../sections/agents/managers/agents-manager";
-import {SessionsManager} from "../../server/sessions-manager";
+import {SessionsManager} from "../../sections/sessions/managers/sessions-manager";
 
 import moment from "moment";
 
