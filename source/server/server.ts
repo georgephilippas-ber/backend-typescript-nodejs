@@ -2,9 +2,7 @@ import express, {Express} from "express";
 import {ApolloServer, ExpressContext} from "apollo-server-express";
 import {ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault} from "apollo-server-core";
 import http, {Server as httpServer} from 'http';
-import {readFileSync} from "fs";
-import path from "path";
-import {Resolvers} from "./resolvers";
+import {GraphQLSchema} from "./graphql-schema";
 
 export class Server
 {
@@ -13,15 +11,15 @@ export class Server
     httpServer: httpServer;
     apolloServer: ApolloServer;
 
-    constructor(resolvers: Resolvers)
+    constructor(graphQLSchema: GraphQLSchema)
     {
         this.expressApplication = express();
 
         this.httpServer = http.createServer(this.expressApplication);
 
         this.apolloServer = new ApolloServer<ExpressContext>({
-            typeDefs: readFileSync(path.join(__dirname, "..", "..", "GraphQL", "schema.graphql")).toString("utf-8"),
-            resolvers: resolvers.getMergedResolvers(),
+            typeDefs: graphQLSchema.getMergedTypeDefs(),
+            resolvers: graphQLSchema.getMergedResolvers(),
             csrfPrevention: true,
             cache: "bounded",
             plugins: [ApolloServerPluginDrainHttpServer({httpServer: this.httpServer}), ApolloServerPluginLandingPageLocalDefault({embed: true})]
@@ -42,7 +40,7 @@ export class Server
         });
     }
 
-    static createAndStart(resolvers: Resolvers, port: number = 0x1000,): Server
+    static createAndStart(resolvers: GraphQLSchema, port: number = 0x1000): Server
     {
         let apolloServer = new Server(resolvers);
 

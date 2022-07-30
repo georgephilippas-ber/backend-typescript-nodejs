@@ -1,10 +1,10 @@
 import {Server} from "./source/server/server";
-import {Resolvers} from "./source/server/resolvers";
-import {agentsResolver} from "./source/sections/agents/resolvers/resolvers";
+import {GraphQLSchema} from "./source/server/graphql-schema";
+import {agentsResolver, agentsTypeDefs} from "./source/sections/agents/schema/agents-schema";
 
 (() =>
 {
-    const resolvers = new Resolvers([agentsResolver()]);
+    const graphQLSchema = new GraphQLSchema([agentsResolver()], [agentsTypeDefs()]);
 
-    Server.createAndStart(resolvers);
+    Server.createAndStart(graphQLSchema);
 })();
