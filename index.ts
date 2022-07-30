@@ -1,8 +1,10 @@
 import {Server} from "./source/server/server";
-import {GraphQLSchema} from "./source/server/graphql-schema";
+import {GraphQLSchema} from "./source/interface/graphql-schema";
 import {AgentsSchema} from "./source/sections/agents/schema/agents-schema";
 import {AgentsManager} from "./source/sections/agents/managers/agents-manager";
 import {DataProvider} from "./source/model/data-provider";
+import {AuthenticationController} from "./source/sections/authentication/controllers/authentication-controller";
+import {Controllers} from "./source/interface/controller";
 
 (() =>
 {
@@ -13,5 +15,9 @@ import {DataProvider} from "./source/model/data-provider";
 
     const graphQLSchema = new GraphQLSchema([agentsSchema]);
 
-    Server.createAndStart(graphQLSchema);
+    const authenticationController = new AuthenticationController("authentication", agentsManager);
+
+    const controllers: Controllers = new Controllers([authenticationController]);
+
+    Server.createAndStart(graphQLSchema, controllers);
 })();
