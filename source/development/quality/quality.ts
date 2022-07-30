@@ -1,28 +1,25 @@
-import {AgentsManager} from "../../sections/agents/managers/agents-manager";
 import {DataProvider} from "../../model/data-provider";
-import {randomBytes} from "crypto";
 
-let agentsManager = new AgentsManager(new DataProvider());
+import {AgentsManager} from "../../sections/agents/managers/agents-manager";
+import {SessionsManager} from "../../server/sessions-manager";
 
-let agents_ =
-    [
-        [
-            'debbie_dare73',
-            'debbie.dare@yahoo.com',
-            'rabarajiciyuqebe',
-            'voluptatem voluptas numquam voluptatem'
-        ],
-        [
-            'gail.bergstrom',
-            'gail.bergstrom4@hotmail.com',
-            'xeyeremogocezela',
-            'cum consequuntur sint adipisci'
-        ]
-    ];
+import moment from "moment";
 
-let agent_ = agents_[1];
+async function sessionsManager()
+{
+    let dataProvider = new DataProvider();
 
-agentsManager.validate([agent_[0], agent_[2]]).then(value => console.log(value));
-agentsManager.validate([agent_[1], agent_[2]]).then(value => console.log(value));
-agentsManager.validate([agent_[3]]).then(value => console.log(value));
-agentsManager.validate([agent_[3] + randomBytes(0x10).toString("hex")]).then(value => console.log(value));
+    let sessionsManager = new SessionsManager(new AgentsManager(dataProvider), dataProvider);
+
+    // await sessionsManager.create({agentId: 1, expiresAt: moment().add(1, "hour").toDate()}).then(value => console.log(value));
+    // await sessionsManager.create({agentId: 17, expiresAt: moment().add(1, "hour").toDate()}).then(value => console.log(value));
+    //
+    // await sessionsManager.create({agentId: 13}).then(value => console.log(value));
+    // await sessionsManager.extend({by: {unit: "hours", quantity: 2}, id: 13}).then(value => console.log(value));
+
+    await sessionsManager.extend({by: {unit: "hours", quantity: 2}, id: 5}).then(value => console.log(value));
+
+    await sessionsManager.deleteAll(1);
+}
+
+sessionsManager().then(value => null);

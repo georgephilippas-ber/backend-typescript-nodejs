@@ -18,10 +18,10 @@ export class AgentsManager
         this.dataProvider = dataProvider;
     }
 
-    async create(agentCreate: dtoCreateAgent): Promise<Agent | undefined>
+    async create(agentCreate: dtoCreateAgent): Promise<Agent | null>
     {
         if (!dtoCreateAgent.validate(agentCreate))
-            return undefined;
+            return null;
 
         switch (agentCreate.credentials.length)
         {
@@ -41,7 +41,7 @@ export class AgentsManager
                     data: candidateAgent
                 });
             default:
-                return undefined;
+                return null;
         }
     }
 
@@ -61,6 +61,11 @@ export class AgentsManager
         }
 
         return this.dataProvider.fromPrisma().agent.delete({where: {passkey: createHash("md5").update(agentDelete.credential).digest("hex")}});
+    }
+
+    async byId(id: number): Promise<Agent | null>
+    {
+        return this.dataProvider.fromPrisma().agent.findUnique({where: {id}});
     }
 
     async byAssociation(association: string): Promise<Agent | null>
@@ -99,4 +104,5 @@ export class AgentsManager
     {
         return this.dataProvider.fromPrisma().agent.findMany();
     }
+
 }

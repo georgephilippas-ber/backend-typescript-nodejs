@@ -22,7 +22,7 @@ class AgentsManager {
     create(agentCreate) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!data_transfer_object_1.dtoCreateAgent.validate(agentCreate))
-                return undefined;
+                return null;
             switch (agentCreate.credentials.length) {
                 case 3:
                 case 4:
@@ -37,7 +37,7 @@ class AgentsManager {
                         data: candidateAgent
                     });
                 default:
-                    return undefined;
+                    return null;
             }
         });
     }
@@ -52,6 +52,11 @@ class AgentsManager {
                 return this.dataProvider.fromPrisma().agent.delete({ where: { username: agentDelete.credential } });
             }
             return this.dataProvider.fromPrisma().agent.delete({ where: { passkey: (0, crypto_1.createHash)("md5").update(agentDelete.credential).digest("hex") } });
+        });
+    }
+    byId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.dataProvider.fromPrisma().agent.findUnique({ where: { id } });
         });
     }
     byAssociation(association) {
