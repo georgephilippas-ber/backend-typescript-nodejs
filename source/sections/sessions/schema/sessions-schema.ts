@@ -21,7 +21,9 @@ export class SessionsSchema extends Schema
         return {
             Query:
                 {
+                    sessionById: () => {
 
+                    }
                 }
         }
     }
