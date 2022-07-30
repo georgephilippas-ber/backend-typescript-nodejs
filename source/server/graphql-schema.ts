@@ -1,15 +1,29 @@
 import {mergeResolvers, mergeTypeDefs} from "@graphql-tools/merge";
 import {gql} from "apollo-server-express";
+import {faker} from "@faker-js/faker";
+
+export abstract class Schema
+{
+    protected constructor()
+    {
+    }
+
+    abstract resolver(): any
+
+    abstract typeDefs(): any
+}
 
 export class GraphQLSchema
 {
     resolvers: any[];
     typeDefs: any[];
 
-    constructor(resolvers: any[], typeDefs: any[])
+    constructor(schemas: Schema[])
     {
-        this.resolvers = resolvers;
-        this.typeDefs = [typeDefs, gql`
+        this.resolvers = [...schemas.map(value => value.resolver()), {
+            Query: {random: () => faker.datatype.number()}
+        }];
+        this.typeDefs = [...schemas.map(value => value.typeDefs()), gql`
             type Query
             {
                 random: Float!

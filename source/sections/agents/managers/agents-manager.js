@@ -81,5 +81,10 @@ class AgentsManager {
             }
         });
     }
+    all() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.dataProvider.fromPrisma().agent.findMany();
+        });
+    }
 }
 exports.AgentsManager = AgentsManager;

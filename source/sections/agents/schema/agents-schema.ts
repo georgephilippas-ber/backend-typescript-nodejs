@@ -1,26 +1,46 @@
-import {faker} from "@faker-js/faker";
 import {gql} from "apollo-server-express";
+import {Schema} from "../../../server/graphql-schema";
+import {AgentsManager} from "../managers/agents-manager";
 
-const agentsTypeDefs_ = gql`
-    extend type Query
+export class AgentsSchema extends Schema
+{
+    agentsManager: AgentsManager;
+
+    public constructor(agentsManager: AgentsManager)
     {
+        super();
+
+        this.agentsManager = agentsManager;
     }
-`;
 
-const agentsResolver_ =
+    typeDefs(): any
     {
-        Query:
+        return gql`
+            type Agent
             {
-                random: () => faker.datatype.number()
+                id: ID!
+
+                username: String
+                email: String
             }
-    };
 
-export function agentsResolver()
-{
-    return agentsResolver_;
-}
+            extend type Query
+            {
+                allAgents: [Agent!]
+            }
+        `;
+    }
 
-export function agentsTypeDefs()
-{
-    return agentsTypeDefs_;
+    resolver(): any
+    {
+        return {
+            Query:
+                {
+                    allAgents: () =>
+                    {
+                        return this.agentsManager.all();
+                    }
+                }
+        }
+    }
 }

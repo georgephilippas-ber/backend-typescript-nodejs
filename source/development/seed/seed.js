@@ -11,10 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const agents_1 = require("./entities/agents");
-function seed(agentsCardinality = 0x02) {
+function seed(agentsCardinality = 0x10) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("seedAgents");
         yield (0, agents_1.seed)(agentsCardinality);
     });
 }
 exports.seed = seed;
-seed();
+seed().then(value => undefined);

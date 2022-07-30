@@ -94,4 +94,9 @@ export class AgentsManager
                 return false;
         }
     }
+
+    async all(): Promise<Agent[]>
+    {
+        return this.dataProvider.fromPrisma().agent.findMany();
+    }
 }

@@ -34,15 +34,22 @@ export class Server
             app: this.expressApplication,
         });
 
+        process.on("SIGINT", async args =>
+        {
+            console.log("!apolloServer");
+            
+            await this.apolloServer.stop();
+        })
+
         return new Promise<ApolloServer>(resolve =>
         {
             this.httpServer.listen({port}, () => resolve(this.apolloServer))
         });
     }
 
-    static createAndStart(resolvers: GraphQLSchema, port: number = 0x1000): Server
+    static createAndStart(graphQLSchema: GraphQLSchema, port: number = 0x1000): Server
     {
-        let apolloServer = new Server(resolvers);
+        let apolloServer = new Server(graphQLSchema);
 
         apolloServer.start(port).then(value => console.log(["http://localhost", ":", port, value.graphqlPath].join("")));
 
