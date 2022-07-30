@@ -1,4 +1,4 @@
-import {seed as seedAgents} from "./agents"
+import {seed as seedAgents} from "./entities/agents"
 
 export async function seed(agentsCardinality: number = 0x02)
 {

@@ -26,4 +26,3 @@ agentsManager.validate([agent_[0], agent_[2]]).then(value => console.log(value))
 agentsManager.validate([agent_[1], agent_[2]]).then(value => console.log(value));
 agentsManager.validate([agent_[3]]).then(value => console.log(value));
 agentsManager.validate([agent_[3] + randomBytes(0x10).toString("hex")]).then(value => console.log(value));
-

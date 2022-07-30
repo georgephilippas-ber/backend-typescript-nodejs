@@ -19,7 +19,7 @@ export class Server
         this.httpServer = http.createServer(this.expressApplication);
 
         this.apolloServer = new ApolloServer<ExpressContext>({
-            typeDefs: readFileSync(path.join(__dirname, "..", "sections", "root", "GraphQL", "combined.graphql")).toString("utf-8"),
+            typeDefs: readFileSync(path.join(__dirname, "..", "..", "GraphQL", "schema.graphql")).toString("utf-8"),
             resolvers: {},
             csrfPrevention: true,
             cache: "bounded",

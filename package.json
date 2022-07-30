@@ -8,7 +8,7 @@
     "test": "jest --verbose=true",
     "seed": "ts-node source/development/seed/seed.ts",
     "quality": "ts-node source/development/quality/quality.ts",
-    "combine-schemas": "ts-node source/development/GraphQL/combine-schemas.ts"
+    "generate-graphql-schema": "ts-node source/development/generate-graphql-schema/combine-schemas.ts"
   },
   "repository": {
     "type": "git",

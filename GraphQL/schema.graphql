@@ -5,13 +5,8 @@ type Query
 
 type Agent
 {
-    id: ID
+    id: ID!
 
     username: String
     email: String
-}
-
-input CreateAgent
-{
-    credentials: [String!]!
 }
