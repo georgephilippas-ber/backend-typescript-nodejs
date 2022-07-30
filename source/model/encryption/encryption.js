@@ -32,7 +32,7 @@ class Encryption {
                 return false;
             else
                 return new Promise(resolve => {
-                    (0, crypto_1.scrypt)(password, salt, Buffer.from(pure).length, (err, derivedKey) => {
+                    (0, crypto_1.scrypt)(password, salt, 0x20, (err, derivedKey) => {
                         resolve(derivedKey.toString("hex") === pure);
                     });
                 });

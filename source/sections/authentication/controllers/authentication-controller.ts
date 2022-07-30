@@ -3,10 +3,11 @@ import express, {Request, Router} from "express";
 import {getReasonPhrase, StatusCodes} from "http-status-codes"
 
 import {plainToInstance} from "class-transformer";
-import {dtoCreateAgent} from "../../agents/data-transfer-object/data-transfer-object";
+import {dtoCreateAgent, dtoLoginAgent} from "../../agents/data-transfer-object/data-transfer-object";
 import {AgentsManager} from "../../agents/managers/agents-manager";
 
 import {Controller, body} from "../../../interface/controller";
+import {log} from "util";
 
 export class AuthenticationController extends Controller
 {
@@ -19,17 +20,19 @@ export class AuthenticationController extends Controller
         this.agentsManager = agentsManager;
 
         this.router.use(express.json());
+
+        this.login();
     }
 
     login()
     {
-        this.router.post("login", async (req, res) =>
+        this.router.post("/login", async (req, res) =>
         {
-            let createAgent: dtoCreateAgent = plainToInstance(dtoCreateAgent, body(req));
+            let agentLogin: dtoLoginAgent = plainToInstance(dtoLoginAgent, body(req));
 
-            if (!dtoCreateAgent.validate(createAgent))
+            if (!dtoLoginAgent.validate(agentLogin))
                 res.sendStatus(StatusCodes.BAD_REQUEST)
-            else if (!(await this.agentsManager.validate(createAgent.credentials)))
+            else if (!(await this.agentsManager.validate(agentLogin.credentials)))
                 res.sendStatus(StatusCodes.FORBIDDEN);
             else
             {

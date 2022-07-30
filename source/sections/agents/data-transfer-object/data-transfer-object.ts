@@ -17,7 +17,7 @@ export class dtoLoginAgent
 {
     credentials!: string[];
 
-    static validate(agentLogin: dtoLoginAgent)
+    static validate(agentLogin: dtoLoginAgent): boolean
     {
         const criteria = [agentLogin.credentials, isArray(agentLogin.credentials), isBetween(agentLogin.credentials.length, 1, 2), agentLogin.credentials.every(value => value)];
 

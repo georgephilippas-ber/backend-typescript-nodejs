@@ -9,9 +9,11 @@ export async function seed(cardinality: number)
 
     for (let i_ = 0; i_ < cardinality; i_++)
     {
-        const forename = faker.name.firstName("female"), surname = faker.name.lastName("female");
+        const forename = faker.name.firstName(), surname = faker.name.lastName();
 
         let agentCreate: dtoCreateAgent = {credentials: [faker.internet.userName(forename, surname).toLowerCase(), faker.internet.email(forename, surname).toLowerCase(), faker.internet.password(0x10, true).toLowerCase(), faker.lorem.words(0x04)]};
+
+        console.log(agentCreate);
 
         await agentsManager.create(agentCreate);
     }

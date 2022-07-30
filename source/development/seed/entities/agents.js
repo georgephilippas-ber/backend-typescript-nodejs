@@ -17,8 +17,9 @@ function seed(cardinality) {
     return __awaiter(this, void 0, void 0, function* () {
         const agentsManager = new agents_manager_1.AgentsManager(new data_provider_1.DataProvider());
         for (let i_ = 0; i_ < cardinality; i_++) {
-            const forename = faker_1.faker.name.firstName("female"), surname = faker_1.faker.name.lastName("female");
+            const forename = faker_1.faker.name.firstName(), surname = faker_1.faker.name.lastName();
             let agentCreate = { credentials: [faker_1.faker.internet.userName(forename, surname).toLowerCase(), faker_1.faker.internet.email(forename, surname).toLowerCase(), faker_1.faker.internet.password(0x10, true).toLowerCase(), faker_1.faker.lorem.words(0x04)] };
+            console.log(agentCreate);
             yield agentsManager.create(agentCreate);
         }
     });

@@ -31,7 +31,7 @@ export class AgentsSchema extends Schema
         `;
     }
 
-    resolver(): r
+    resolver(): any
     {
         return {
             Query:

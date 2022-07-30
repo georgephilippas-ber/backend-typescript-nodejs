@@ -5,7 +5,9 @@ import http, {Server as httpServer} from 'http';
 import {GraphQLSchema} from "../interface/graphql-schema";
 import {Controllers} from "../interface/controller";
 
-export class Server
+import cors from "cors";
+
+export class bServer
 {
     expressApplication: Express;
 
@@ -15,6 +17,7 @@ export class Server
     constructor(graphQLSchema: GraphQLSchema, controllers: Controllers)
     {
         this.expressApplication = express();
+        this.expressApplication.use(cors());
 
         this.httpServer = http.createServer(this.expressApplication);
 
@@ -29,7 +32,7 @@ export class Server
         controllers.register(this.expressApplication);
     }
 
-    async start(port: number = 0x1000): Promise<ApolloServer>
+    async start(port: number): Promise<bServer>
     {
         await this.apolloServer.start();
 
@@ -44,18 +47,21 @@ export class Server
             await this.apolloServer.stop();
         })
 
-        return new Promise<ApolloServer>(resolve =>
+        return new Promise<bServer>(resolve =>
         {
-            this.httpServer.listen({port}, () => resolve(this.apolloServer))
+            this.httpServer.listen({port}, () => resolve(this));
         });
     }
 
-    static createAndStart(graphQLSchema: GraphQLSchema, controllers: Controllers, port: number = 0x1000): Server
+    async stop(): Promise<void>
     {
-        let apolloServer = new Server(graphQLSchema, controllers);
+        return this.apolloServer.stop();
+    }
 
-        apolloServer.start(port).then(value => console.log(["http://localhost", ":", port, value.graphqlPath].join("")));
+    static async createAndStart(graphQLSchema: GraphQLSchema, controllers: Controllers, port: number = 0x1000): Promise<bServer>
+    {
+        let bServer_ = new bServer(graphQLSchema, controllers);
 
-        return apolloServer;
+        return bServer_.start(port);
     }
 }

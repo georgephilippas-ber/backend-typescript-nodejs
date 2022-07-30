@@ -29,7 +29,7 @@ export class Encryption
         else
             return new Promise<boolean>(resolve =>
             {
-                scrypt(password, salt, Buffer.from(pure).length, (err, derivedKey) =>
+                scrypt(password, salt, 0x20, (err, derivedKey) =>
                 {
                     resolve(derivedKey.toString("hex") === pure)
                 });
