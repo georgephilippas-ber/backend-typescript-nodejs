@@ -4,6 +4,7 @@ import {ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDef
 import http, {Server as httpServer} from 'http';
 import {readFileSync} from "fs";
 import path from "path";
+import {Resolvers} from "./resolvers";
 
 export class Server
 {
@@ -12,7 +13,7 @@ export class Server
     httpServer: httpServer;
     apolloServer: ApolloServer;
 
-    constructor()
+    constructor(resolvers: Resolvers)
     {
         this.expressApplication = express();
 
@@ -20,7 +21,7 @@ export class Server
 
         this.apolloServer = new ApolloServer<ExpressContext>({
             typeDefs: readFileSync(path.join(__dirname, "..", "..", "GraphQL", "schema.graphql")).toString("utf-8"),
-            resolvers: {},
+            resolvers: resolvers.getMergedResolvers(),
             csrfPrevention: true,
             cache: "bounded",
             plugins: [ApolloServerPluginDrainHttpServer({httpServer: this.httpServer}), ApolloServerPluginLandingPageLocalDefault({embed: true})]
@@ -41,9 +42,9 @@ export class Server
         });
     }
 
-    static createAndStart(port: number = 0x1000): Server
+    static createAndStart(resolvers: Resolvers, port: number = 0x1000,): Server
     {
-        let apolloServer = new Server();
+        let apolloServer = new Server(resolvers);
 
         apolloServer.start(port).then(value => console.log(["http://localhost", ":", port, value.graphqlPath].join("")));
 
