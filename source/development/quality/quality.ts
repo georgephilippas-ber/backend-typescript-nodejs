@@ -28,7 +28,7 @@ async function authenticationController()
         {
             console.log(value.httpServer.listening);
 
-            axios.post("http://localhost:4096/authentication/login", {credentials: ["tremaine_walsh75", "yataqijugezapubo"]}).then(value1 =>
+            axios.post("http://localhost:4096/authentication/login", {credentials: ["lurline_romaguera19", "nazepudukixuqiqa"]}).then(value1 =>
             {
                 console.log(value1.data);
             }).catch(reason => console.log(reason.code)).finally(() =>

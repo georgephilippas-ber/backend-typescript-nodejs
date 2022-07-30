@@ -19,13 +19,13 @@ class Encryption {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = (0, crypto_1.randomBytes)(saltLength_bytes);
             return new Promise(resolve => {
-                (0, crypto_1.scrypt)(password, salt.toString("hex"), 0x20, (err, derivedKey) => {
+                (0, crypto_1.scrypt)(password, salt.toString("hex"), hashLength_bytes, (err, derivedKey) => {
                     resolve([derivedKey, salt].map(value => value.toString("hex")).join(separator));
                 });
             });
         });
     }
-    static verifyPassword(password, hash, separator = "&") {
+    static verifyPassword(password, hash, hashLength_bytes, separator = "&") {
         return __awaiter(this, void 0, void 0, function* () {
             const [pure, salt] = hash.split(separator);
             if (!salt)

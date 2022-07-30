@@ -94,7 +94,7 @@ export class AgentsManager
             case 2:
                 const agent = await this.byAssociation(credentials[0]);
 
-                return !!agent && Encryption.verifyPassword(credentials[1], agent.password);
+                return !!agent && Encryption.verifyPassword(credentials[1], agent.password, configuration().authentication.hashLength_bytes);
             default:
                 return false;
         }

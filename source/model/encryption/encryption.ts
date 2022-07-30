@@ -13,14 +13,14 @@ export class Encryption
 
         return new Promise<string>(resolve =>
         {
-            scrypt(password, salt.toString("hex"), 0x20, (err, derivedKey) =>
+            scrypt(password, salt.toString("hex"), hashLength_bytes, (err, derivedKey) =>
             {
                 resolve([derivedKey, salt].map(value => value.toString("hex")).join(separator));
             });
         })
     }
 
-    static async verifyPassword(password: string, hash: string, separator: string = "&"): Promise<boolean>
+    static async verifyPassword(password: string, hash: string, hashLength_bytes: number, separator: string = "&"): Promise<boolean>
     {
         const [pure, salt] = hash.split(separator);
 

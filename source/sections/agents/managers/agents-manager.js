@@ -80,7 +80,7 @@ class AgentsManager {
                     return !!(yield this.byPasskey(credentials[0]));
                 case 2:
                     const agent = yield this.byAssociation(credentials[0]);
-                    return !!agent && encryption_1.Encryption.verifyPassword(credentials[1], agent.password);
+                    return !!agent && encryption_1.Encryption.verifyPassword(credentials[1], agent.password, (0, configuration_1.configuration)().authentication.hashLength_bytes);
                 default:
                     return false;
             }
