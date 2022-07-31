@@ -47,14 +47,16 @@ export class SessionsManager
         return this.dataProvider.fromPrisma().session.findUnique({where: {id}});
     }
 
-    async validById(id: number): Promise<Session | null>
+    async getSessionValidity(sessionId: number): Promise<"nonexistent" | "expired" | "valid">
     {
-        const session_: Session | null = await this.byId(id);
+        const session_: Session | null = await this.byId(sessionId);
 
-        if (session_ && moment(session_.expiresAt) < moment())
-            return session_;
+        if (!session_)
+            return "nonexistent";
+        else if (moment(session_.expiresAt) < moment())
+            return "expired";
         else
-            return null;
+            return "valid";
     }
 
     async extend(sessionExtend: dtoExtendSession): Promise<Session | null>

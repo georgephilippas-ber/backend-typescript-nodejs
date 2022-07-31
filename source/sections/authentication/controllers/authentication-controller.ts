@@ -23,7 +23,6 @@ class dtoAgentSession
     }
 }
 
-
 export class AuthenticationController extends Controller
 {
     agentsManager: AgentsManager;
@@ -82,32 +81,52 @@ export class AuthenticationController extends Controller
     {
         this.router.post("/logout", async (req, res) =>
         {
-            let session_: dtoAgentSession | null = await this.getSession(req);
+            let session_: dtoAgentSession | null = await this.extractSession(req);
 
             if (!session_)
-                res.sendStatus(StatusCodes.EXPECTATION_FAILED)
+                res.status(StatusCodes.EXPECTATION_FAILED).send({error: "invalid token"});
             else
             {
-                await this.sessionsManager.delete({id: session_.sessionId});
+                let sessionValidity = await this.sessionsManager.getSessionValidity(session_.sessionId);
 
-                res.sendStatus(StatusCodes.OK);
+                switch (sessionValidity)
+                {
+                    case "nonexistent":
+                        res.status(StatusCodes.NOT_FOUND).send({error: sessionValidity});
+                        break;
+                    case "expired":
+                        await this.sessionsManager.delete({id: session_.sessionId});
+                        res.status(StatusCodes.FAILED_DEPENDENCY).send({error: sessionValidity});
+                        break;
+                    case "valid":
+                        await this.sessionsManager.delete({id: session_.sessionId});
+                        res.sendStatus(StatusCodes.OK);
+                }
             }
         });
     }
 
-    async getSession(req: Request): Promise<dtoAgentSession | null>
+    async extractSession(req: Request): Promise<dtoAgentSession | null>
     {
         const authenticationHeader: string = headers(req)[this.configuration.authenticationHeader()];
+
+        console.log(headers(req));
+
+        console.log(authenticationHeader);
 
         if (!authenticationHeader)
             return null;
 
         const authenticationToken = authenticationHeader.split(" ")[1];
+        console.log(authenticationToken);
 
         if (!authenticationToken)
             return null;
 
+
         const authenticationPayload = this.jsonWebToken.verify(authenticationToken);
+
+        console.log(authenticationPayload);
 
         if (!authenticationPayload)
             return null;
