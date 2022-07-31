@@ -12,16 +12,7 @@ import {Configuration} from "../../../configuration/configuration";
 import {SessionsManager} from "../../sessions/managers/sessions-manager";
 import moment from "moment";
 
-class dtoAgentSession
-{
-    agentId!: number;
-    sessionId!: number;
-
-    static validate(agentSession: dtoAgentSession)
-    {
-        return Boolean(agentSession.agentId && agentSession.sessionId);
-    }
-}
+import {dtoSession} from "../data-transfer-object/data-transfer-object";
 
 export class AuthenticationController extends Controller
 {
@@ -81,13 +72,13 @@ export class AuthenticationController extends Controller
     {
         this.router.post("/logout", async (req, res) =>
         {
-            let session_: dtoAgentSession | null = await this.extractSession(req);
+            let extractedSession: dtoSession | null = await this.extractSession(req);
 
-            if (!session_)
+            if (!extractedSession)
                 res.status(StatusCodes.EXPECTATION_FAILED).send({error: "invalid token"});
             else
             {
-                let sessionValidity = await this.sessionsManager.getSessionValidity(session_.sessionId);
+                let sessionValidity = await this.sessionsManager.getSessionValidity(extractedSession.sessionId);
 
                 switch (sessionValidity)
                 {
@@ -95,32 +86,32 @@ export class AuthenticationController extends Controller
                         res.status(StatusCodes.NOT_FOUND).send({error: sessionValidity});
                         break;
                     case "expired":
-                        await this.sessionsManager.delete({id: session_.sessionId});
+                        await this.sessionsManager.delete({id: extractedSession.sessionId});
                         res.status(StatusCodes.FAILED_DEPENDENCY).send({error: sessionValidity});
                         break;
                     case "valid":
-                        await this.sessionsManager.delete({id: session_.sessionId});
+                        await this.sessionsManager.delete({id: extractedSession.sessionId});
                         res.sendStatus(StatusCodes.OK);
                 }
             }
         });
     }
 
-    extractSession(req: Request): dtoAgentSession | null
+    extractSession(req: Request): dtoSession | null
     {
-        let agentSession: dtoAgentSession | null;
+        let extractedSession: dtoSession | null;
 
         try
         {
-            agentSession = plainToInstance(dtoAgentSession, this.jsonWebToken.verify(headers(req)[this.configuration.authenticationHeader()].split(" ")[1]));
+            extractedSession = plainToInstance(dtoSession, this.jsonWebToken.verify(headers(req)[this.configuration.authenticationHeader()].split(" ")[1]));
         } catch (e)
         {
             console.log(e);
-            agentSession = null;
+            extractedSession = null;
         }
 
-        if (agentSession && dtoAgentSession.validate(agentSession))
-            return {agentId: agentSession.agentId, sessionId: agentSession.sessionId};
+        if (extractedSession && dtoSession.validate(extractedSession))
+            return {agentId: extractedSession.agentId, sessionId: extractedSession.sessionId};
         else
             return null;
     }
