@@ -42,19 +42,3 @@ async function authenticationController()
         }
     );
 }
-
-class dtoUserIdClass
-{
-    id!: number;
-}
-
-function jsonWebToken()
-{
-    let jsonwebtoken = new JSONWebToken("this is a secret")
-
-    let a = jsonwebtoken.produce({a: 10, b: 20}, {duration: 10, unit: "seconds"});
-
-    setTimeout(() => console.log(jsonwebtoken.verify(a)), 1000);
-}
-
-jsonWebToken();

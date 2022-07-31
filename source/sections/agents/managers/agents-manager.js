@@ -29,7 +29,7 @@ class AgentsManager {
                     const candidateAgent = {
                         username: agentCreate.credentials[0],
                         email: agentCreate.credentials[1],
-                        password: yield encryption_1.Encryption.hashPassword_generateSalt(agentCreate.credentials[2], this.configuration.getAuthentication("hashLength_bytes")),
+                        password: yield encryption_1.Encryption.hashPassword_generateSalt(agentCreate.credentials[2], this.configuration.getHashLength_bytes()),
                     };
                     if (agentCreate.credentials[3])
                         candidateAgent.passkey = encryption_1.Encryption.hashPasskey(agentCreate.credentials[3]);
@@ -48,7 +48,7 @@ class AgentsManager {
             if ((0, class_validator_1.isEmail)(agentDelete.credential)) {
                 return this.dataProvider.fromPrisma().agent.delete({ where: { email: agentDelete.credential } });
             }
-            if (agentDelete.credential.length <= this.configuration.getAuthentication("maximumUsernameLength_characters")) {
+            if (agentDelete.credential.length <= this.configuration.getMaximumUsernameLength_characters()) {
                 return this.dataProvider.fromPrisma().agent.delete({ where: { username: agentDelete.credential } });
             }
             return this.dataProvider.fromPrisma().agent.delete({ where: { passkey: (0, crypto_1.createHash)("md5").update(agentDelete.credential).digest("hex") } });
@@ -81,7 +81,7 @@ class AgentsManager {
                 case 2:
                     const agent = yield this.byAssociation(credentials[0]);
                     if (agent)
-                        return (yield encryption_1.Encryption.verifyPassword(credentials[1], agent.password, this.configuration.getAuthentication("hashLength_bytes"))) ? agent : null;
+                        return (yield encryption_1.Encryption.verifyPassword(credentials[1], agent.password, this.configuration.getHashLength_bytes())) ? agent : null;
                     else
                         return null;
                 default:

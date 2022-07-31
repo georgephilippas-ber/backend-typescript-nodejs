@@ -33,7 +33,7 @@ export class AgentsManager
                     {
                         username: agentCreate.credentials[0],
                         email: agentCreate.credentials[1],
-                        password: await Encryption.hashPassword_generateSalt(agentCreate.credentials[2], this.configuration.getAuthentication("hashLength_bytes")),
+                        password: await Encryption.hashPassword_generateSalt(agentCreate.credentials[2], this.configuration.getHashLength_bytes()),
                     };
 
                 if (agentCreate.credentials[3])
@@ -57,7 +57,7 @@ export class AgentsManager
             return this.dataProvider.fromPrisma().agent.delete({where: {email: agentDelete.credential}});
         }
 
-        if (agentDelete.credential.length <= this.configuration.getAuthentication("maximumUsernameLength_characters"))
+        if (agentDelete.credential.length <= this.configuration.getMaximumUsernameLength_characters())
         {
             return this.dataProvider.fromPrisma().agent.delete({where: {username: agentDelete.credential}});
         }
@@ -97,7 +97,7 @@ export class AgentsManager
                 const agent = await this.byAssociation(credentials[0]);
 
                 if (agent)
-                    return (await Encryption.verifyPassword(credentials[1], agent.password, this.configuration.getAuthentication("hashLength_bytes"))) ? agent : null;
+                    return (await Encryption.verifyPassword(credentials[1], agent.password, this.configuration.getHashLength_bytes())) ? agent : null;
                 else
                     return null;
             default:

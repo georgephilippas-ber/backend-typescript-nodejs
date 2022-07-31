@@ -3,9 +3,12 @@ import {faker} from "@faker-js/faker";
 import {duration_type} from "../interface/types";
 
 type configuration_type = {
-    authentication:
+    encryption:
         {
             hashLength_bytes: number;
+        },
+    authentication:
+        {
             maximumUsernameLength_characters: number;
             secretOrPrivateKey: Secret;
             sessionDuration:
@@ -13,23 +16,28 @@ type configuration_type = {
                     initial: duration_type;
                     extension: duration_type;
                 };
+            authenticationHeader: string;
         }
 }
 
-const configuration_: configuration_type = Object.freeze(
+const configuration_: configuration_type =
     {
+        encryption:
+            {
+                hashLength_bytes: 0x20
+            },
         authentication:
             {
-                hashLength_bytes: 0x20,
                 maximumUsernameLength_characters: 0x10,
                 secretOrPrivateKey: faker.datatype.uuid(),
                 sessionDuration:
                     {
                         initial: {quantity: 0x02, unit: "hours"},
                         extension: {quantity: 30, unit: "minutes"}
-                    }
+                    },
+                authenticationHeader: "Authentication".toLowerCase()
             }
-    });
+    };
 
 export class Configuration
 {
@@ -40,9 +48,14 @@ export class Configuration
         this.configuration = configuration_;
     }
 
-    getAuthentication(key: keyof configuration_type["authentication"]): any
+    getHashLength_bytes(): number
     {
-        return this.configuration.authentication[key];
+        return this.configuration.encryption.hashLength_bytes;
+    }
+
+    getMaximumUsernameLength_characters(): number
+    {
+        return this.configuration.authentication.maximumUsernameLength_characters;
     }
 
     getSecretOrPrivateKey(): Secret
@@ -53,5 +66,10 @@ export class Configuration
     getSessionDuration(key: keyof configuration_type["authentication"]["sessionDuration"]): duration_type
     {
         return this.configuration.authentication.sessionDuration[key];
+    }
+
+    authenticationHeader(): string
+    {
+        return this.configuration.authentication.authenticationHeader;
     }
 }

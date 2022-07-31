@@ -13,11 +13,11 @@ export class JSONWebToken
         this.secretOrPrivateKey = secretOrPrivateKey;
     }
 
-    produce(payload: object, expiration?: duration_type): string
+    produce(payload: object, duration?: duration_type): string
     {
-        let payload_ = !expiration ? payload : {
+        let payload_ = !duration ? payload : {
             ...payload,
-            exp: moment().add(expiration.quantity, expiration.unit).unix()
+            exp: moment().add(duration.quantity, duration.unit).unix()
         };
 
         return jsonwebtoken.sign(payload_, this.secretOrPrivateKey);

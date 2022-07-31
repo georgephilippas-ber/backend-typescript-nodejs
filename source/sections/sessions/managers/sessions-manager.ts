@@ -47,6 +47,16 @@ export class SessionsManager
         return this.dataProvider.fromPrisma().session.findUnique({where: {id}});
     }
 
+    async validById(id: number): Promise<Session | null>
+    {
+        const session_: Session | null = await this.byId(id);
+
+        if (session_ && moment(session_.expiresAt) < moment())
+            return session_;
+        else
+            return null;
+    }
+
     async extend(sessionExtend: dtoExtendSession): Promise<Session | null>
     {
         const session_ = await this.byId(sessionExtend.id);

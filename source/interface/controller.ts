@@ -23,7 +23,6 @@ export function headers(req: Request): any
     return req.headers;
 }
 
-
 export class Controllers
 {
     controllers: Controller[];
