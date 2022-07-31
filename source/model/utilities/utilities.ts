@@ -16,3 +16,14 @@ export function isBetween(number_: number, minimum: number, maximum: number, inc
 
     return criteria.every(value => value);
 }
+
+export function exclude(object_: object, exclude_properties_: string[]): any
+{
+    let transformed_: any = {};
+
+    for (let property_ in object_)
+        if (!exclude_properties_.includes(property_))
+            transformed_[property_] = property_;
+
+    return transformed_;
+}

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isBetween = void 0;
+exports.exclude = exports.isBetween = void 0;
 function isBetween(number_, minimum, maximum, inclusive = "both") {
     let criteria = [];
     if (["minimum", "both"].includes(inclusive))
@@ -14,3 +14,11 @@ function isBetween(number_, minimum, maximum, inclusive = "both") {
     return criteria.every(value => value);
 }
 exports.isBetween = isBetween;
+function exclude(object_, exclude_properties_) {
+    let transformed_ = {};
+    for (let property_ in object_)
+        if (!exclude_properties_.includes(property_))
+            transformed_[property_] = property_;
+    return transformed_;
+}
+exports.exclude = exclude;

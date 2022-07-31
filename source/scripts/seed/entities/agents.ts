@@ -3,9 +3,11 @@ import {AgentsManager} from "../../../sections/agents/managers/agents-manager";
 import {faker} from "@faker-js/faker";
 import {dtoCreateAgent} from "../../../sections/agents/data-transfer-object/data-transfer-object";
 
+import {Configuration} from "../../../configuration/configuration";
+
 export async function seed(cardinality: number)
 {
-    const agentsManager = new AgentsManager(new DataProvider());
+    const agentsManager = new AgentsManager(new DataProvider(), new Configuration());
 
     for (let i_ = 0; i_ < cardinality; i_++)
     {

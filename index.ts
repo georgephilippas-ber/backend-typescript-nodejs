@@ -1,3 +1,3 @@
-import {bootstrap} from "./source/server/bootstrap";
+import {bootstrap} from "./source/bootstrap";
 
 bootstrap().then(value => null);

@@ -7,15 +7,17 @@ import {dtoCreateAgent, dtoDeleteAgent} from "../data-transfer-object/data-trans
 import {Encryption} from "../../../model/encryption/encryption";
 import {isEmail} from "class-validator";
 import {createHash} from "crypto";
-import {configuration} from "../../../configuration/configuration";
+import {Configuration} from "../../../configuration/configuration";
 
 export class AgentsManager
 {
     dataProvider: DataProvider;
+    configuration: Configuration;
 
-    constructor(dataProvider: DataProvider)
+    constructor(dataProvider: DataProvider, configuration: Configuration)
     {
         this.dataProvider = dataProvider;
+        this.configuration = configuration;
     }
 
     async create(agentCreate: dtoCreateAgent): Promise<Agent | null>
@@ -31,7 +33,7 @@ export class AgentsManager
                     {
                         username: agentCreate.credentials[0],
                         email: agentCreate.credentials[1],
-                        password: await Encryption.hashPassword_generateSalt(agentCreate.credentials[2], configuration().authentication.hashLength_bytes),
+                        password: await Encryption.hashPassword_generateSalt(agentCreate.credentials[2], this.configuration.getAuthentication("hashLength_bytes")),
                     };
 
                 if (agentCreate.credentials[3])
@@ -55,7 +57,7 @@ export class AgentsManager
             return this.dataProvider.fromPrisma().agent.delete({where: {email: agentDelete.credential}});
         }
 
-        if (agentDelete.credential.length <= configuration().authentication.maximumUsernameLength_characters)
+        if (agentDelete.credential.length <= this.configuration.getAuthentication("maximumUsernameLength_characters"))
         {
             return this.dataProvider.fromPrisma().agent.delete({where: {username: agentDelete.credential}});
         }
@@ -82,21 +84,24 @@ export class AgentsManager
         return this.dataProvider.fromPrisma().agent.findUnique({where});
     }
 
-    async validate(credentials: string[]): Promise<boolean>
+    async validate(credentials: string[]): Promise<Agent | null>
     {
         if (!credentials[0])
-            return false;
+            return null;
 
         switch (credentials.length)
         {
             case 1:
-                return !!(await this.byPasskey(credentials[0]));
+                return this.byPasskey(credentials[0]);
             case 2:
                 const agent = await this.byAssociation(credentials[0]);
 
-                return !!agent && Encryption.verifyPassword(credentials[1], agent.password, configuration().authentication.hashLength_bytes);
+                if (agent)
+                    return (await Encryption.verifyPassword(credentials[1], agent.password, this.configuration.getAuthentication("hashLength_bytes"))) ? agent : null;
+                else
+                    return null;
             default:
-                return false;
+                return null;
         }
     }
 
@@ -104,5 +109,4 @@ export class AgentsManager
     {
         return this.dataProvider.fromPrisma().agent.findMany();
     }
-
 }

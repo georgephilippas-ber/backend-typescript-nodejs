@@ -4,14 +4,18 @@ import {AgentsManager} from "../../sections/agents/managers/agents-manager";
 import {SessionsManager} from "../../sections/sessions/managers/sessions-manager";
 
 import moment from "moment";
-import {bootstrap} from "../../server/bootstrap";
+import {bootstrap} from "../../bootstrap";
 import axios from "axios";
+
+import {JSONWebToken} from "../../model/json-web-token/json-web-token";
+import {Configuration} from "../../configuration/configuration";
 
 async function sessionsManager()
 {
     let dataProvider = new DataProvider();
+    let configuration = new Configuration();
 
-    let sessionsManager = new SessionsManager(new AgentsManager(dataProvider), dataProvider);
+    let sessionsManager = new SessionsManager(new AgentsManager(dataProvider, configuration), dataProvider);
 
     await sessionsManager.create({
         agentId: 1,
@@ -39,4 +43,18 @@ async function authenticationController()
     );
 }
 
-authenticationController();
+class dtoUserIdClass
+{
+    id!: number;
+}
+
+function jsonWebToken()
+{
+    let jsonwebtoken = new JSONWebToken("this is a secret")
+
+    let a = jsonwebtoken.produce({a: 10, b: 20}, {duration: 10, unit: "seconds"});
+
+    setTimeout(() => console.log(jsonwebtoken.verify(a)), 1000);
+}
+
+jsonWebToken();

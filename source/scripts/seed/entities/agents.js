@@ -13,9 +13,10 @@ exports.seed = void 0;
 const data_provider_1 = require("../../../model/data-provider");
 const agents_manager_1 = require("../../../sections/agents/managers/agents-manager");
 const faker_1 = require("@faker-js/faker");
+const configuration_1 = require("../../../configuration/configuration");
 function seed(cardinality) {
     return __awaiter(this, void 0, void 0, function* () {
-        const agentsManager = new agents_manager_1.AgentsManager(new data_provider_1.DataProvider());
+        const agentsManager = new agents_manager_1.AgentsManager(new data_provider_1.DataProvider(), new configuration_1.Configuration());
         for (let i_ = 0; i_ < cardinality; i_++) {
             const forename = faker_1.faker.name.firstName(), surname = faker_1.faker.name.lastName();
             let agentCreate = { credentials: [faker_1.faker.internet.userName(forename, surname).toLowerCase(), faker_1.faker.internet.email(forename, surname).toLowerCase(), faker_1.faker.internet.password(0x10, true).toLowerCase(), faker_1.faker.lorem.words(0x04)] };

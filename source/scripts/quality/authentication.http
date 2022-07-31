@@ -1,8 +1,16 @@
 ### Send POST request with json body
-### harvey_bartoletti harvey_bartoletti28@yahoo.com cituhoyijatimawa qui eaque nihil sed
+
+#  credentials: [
+#    'cade.hintz',
+#    'cade15@gmail.com',
+#    'vipakulomemuxaze',
+#    'a amet omnis suscipit'
+#  ]
+
+
 POST http://localhost:4096/authentication/login
 Content-Type: application/json
 
 {
-  "credentials": ["lurline_romaguera19", "nazepudukixuqiqa"]
+  "credentials": ["cade.hintz", "vipakulomemuxaze"]
 }
