@@ -116,3 +116,6 @@ export class AuthenticationController extends Controller
             return null;
     }
 }
+
+//TODO: authenticationMiddleware function
+//TODO: protected controllers: use middleware by default
