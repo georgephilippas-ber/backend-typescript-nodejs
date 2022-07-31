@@ -83,6 +83,8 @@ export class AuthenticationController extends Controller
         {
             let session_: dtoAgentSession | null = await this.extractSession(req);
 
+            console.log(session_);
+
             if (!session_)
                 res.status(StatusCodes.EXPECTATION_FAILED).send({error: "invalid token"});
             else
@@ -106,36 +108,21 @@ export class AuthenticationController extends Controller
         });
     }
 
-    async extractSession(req: Request): Promise<dtoAgentSession | null>
+    extractSession(req: Request): dtoAgentSession | null
     {
-        const authenticationHeader: string = headers(req)[this.configuration.authenticationHeader()];
+        let agentSession: dtoAgentSession | null;
 
-        console.log(headers(req));
+        try
+        {
+            agentSession = plainToInstance(dtoAgentSession, this.jsonWebToken.verify(headers(req)[this.configuration.authenticationHeader()].split(" ")[1]));
+        } catch (e)
+        {
+            agentSession = null;
+        }
 
-        console.log(authenticationHeader);
-
-        if (!authenticationHeader)
-            return null;
-
-        const authenticationToken = authenticationHeader.split(" ")[1];
-        console.log(authenticationToken);
-
-        if (!authenticationToken)
-            return null;
-
-
-        const authenticationPayload = this.jsonWebToken.verify(authenticationToken);
-
-        console.log(authenticationPayload);
-
-        if (!authenticationPayload)
-            return null;
-
-        const agentSession: dtoAgentSession = plainToInstance(dtoAgentSession, authenticationPayload);
-
-        if (!dtoAgentSession.validate(agentSession))
-            return null;
-        else
+        if (agentSession && dtoAgentSession.validate(agentSession))
             return {agentId: agentSession.agentId, sessionId: agentSession.sessionId};
+        else
+            return null;
     }
 }

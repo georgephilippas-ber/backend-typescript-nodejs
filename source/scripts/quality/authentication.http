@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 POST http://localhost:4096/authentication/logout
 Content-Type: application/json
-Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjo2LCJpYXQiOjE2NTkyNjM4NjR9.5SVxTchK6kj52zEdfxxvSyIgTMMX9Dhs8MFNrgnTJ-w
+Authentication: Bearer e3hbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoxNCwiaWF0IjoxNjU5Mjg4MDU2fQ.pHjdnr5oH0pnvS6EsbBVkHEkk4M-2JpBFrb9Y7bi-uM
 
 {
 }

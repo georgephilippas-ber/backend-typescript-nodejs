@@ -15,10 +15,10 @@ function isBetween(number_, minimum, maximum, inclusive = "both") {
 }
 exports.isBetween = isBetween;
 function exclude(object_, exclude_properties_) {
-    let transformed_ = {};
+    let transformedObject = {};
     for (let property_ in object_)
         if (!exclude_properties_.includes(property_))
-            transformed_[property_] = property_;
-    return transformed_;
+            transformedObject[property_] = object_[property_];
+    return transformedObject;
 }
 exports.exclude = exclude;

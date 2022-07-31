@@ -17,13 +17,13 @@ export function isBetween(number_: number, minimum: number, maximum: number, inc
     return criteria.every(value => value);
 }
 
-export function exclude(object_: object, exclude_properties_: string[]): any
+export function exclude(object_: any, exclude_properties_: string[]): any
 {
-    let transformed_: any = {};
+    let transformedObject: any = {};
 
     for (let property_ in object_)
         if (!exclude_properties_.includes(property_))
-            transformed_[property_] = property_;
+            transformedObject[property_] = object_[property_];
 
-    return transformed_;
+    return transformedObject;
 }

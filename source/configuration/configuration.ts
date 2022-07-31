@@ -1,6 +1,7 @@
 import {Secret} from "jsonwebtoken";
 import {faker} from "@faker-js/faker";
 import {duration_type} from "../interface/types";
+import {randomBytes} from "crypto";
 
 type configuration_type = {
     encryption:
@@ -29,7 +30,7 @@ const configuration_: configuration_type =
         authentication:
             {
                 maximumUsernameLength_characters: 0x10,
-                secretOrPrivateKey: faker.datatype.uuid(),
+                secretOrPrivateKey: randomBytes(0x20),
                 sessionDuration:
                     {
                         initial: {quantity: 0x02, unit: "hours"},

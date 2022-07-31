@@ -20,14 +20,14 @@ export class JSONWebToken
             exp: moment().add(duration.quantity, duration.unit).unix()
         };
 
-        return jsonwebtoken.sign(payload_, this.secretOrPrivateKey);
+        return jsonwebtoken.sign(payload_, this.secretOrPrivateKey, {algorithm: "HS256"});
     }
 
     verify(string_: string): object | null
     {
         try
         {
-            return exclude(jsonwebtoken.verify(string_, this.secretOrPrivateKey) as object, ["iat", "exp"]);
+            return exclude(jsonwebtoken.verify(string_, this.secretOrPrivateKey, {algorithms: ["HS256"]}) as object, ["iat", "exp"]);
         } catch (e)
         {
             return null;

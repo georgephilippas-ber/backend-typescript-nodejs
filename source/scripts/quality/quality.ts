@@ -9,6 +9,7 @@ import axios from "axios";
 
 import {JSONWebToken} from "../../model/json-web-token/json-web-token";
 import {Configuration} from "../../configuration/configuration";
+import jsonwebtoken, {verify} from "jsonwebtoken";
 
 async function sessionsManager()
 {
@@ -42,3 +43,20 @@ async function authenticationController()
         }
     );
 }
+
+
+let f = jsonwebtoken.sign({a: "b"}, "aa");
+
+let g = jsonwebtoken.verify(f, "aa");
+
+console.log(f);
+console.log(g);
+
+let izer = new JSONWebToken((new Configuration()).getSecretOrPrivateKey());
+
+let h = izer.produce({a: "b"});
+
+let j = izer.verify(h);
+
+console.log(h);
+console.log(j);
