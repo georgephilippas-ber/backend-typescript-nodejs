@@ -83,8 +83,6 @@ export class AuthenticationController extends Controller
         {
             let session_: dtoAgentSession | null = await this.extractSession(req);
 
-            console.log(session_);
-
             if (!session_)
                 res.status(StatusCodes.EXPECTATION_FAILED).send({error: "invalid token"});
             else
@@ -117,6 +115,7 @@ export class AuthenticationController extends Controller
             agentSession = plainToInstance(dtoAgentSession, this.jsonWebToken.verify(headers(req)[this.configuration.authenticationHeader()].split(" ")[1]));
         } catch (e)
         {
+            console.log(e);
             agentSession = null;
         }
 
