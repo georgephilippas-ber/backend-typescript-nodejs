@@ -1,6 +1,6 @@
 import jsonwebtoken, {Secret} from "jsonwebtoken"
 
-import moment, {DurationInputArg2} from "moment";
+import moment from "moment";
 import {exclude} from "../utilities/utilities";
 import {duration_type} from "../../interface/types";
 

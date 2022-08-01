@@ -1,5 +1,4 @@
 import {Secret} from "jsonwebtoken";
-import {faker} from "@faker-js/faker";
 import {duration_type} from "../interface/types";
 import {randomBytes} from "crypto";
 
