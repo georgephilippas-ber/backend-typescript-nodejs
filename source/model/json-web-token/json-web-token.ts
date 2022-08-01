@@ -30,6 +30,7 @@ export class JSONWebToken
             return exclude(jsonwebtoken.verify(string_, this.secretOrPrivateKey, {algorithms: ["HS256"]}) as object, ["iat", "exp"]);
         } catch (e)
         {
+            console.log("failed")
             return null;
         }
     }

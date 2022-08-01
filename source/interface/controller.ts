@@ -1,4 +1,8 @@
 import express, {Express, Request, Router} from "express";
+import {protectedRoute} from "../sections/authentication/controllers/authentication-controller";
+import {SessionsManager} from "../sections/sessions/managers/sessions-manager";
+import {JSONWebToken} from "../model/json-web-token/json-web-token";
+import {Configuration} from "../configuration/configuration";
 
 export class Controller
 {
@@ -10,6 +14,18 @@ export class Controller
         this.router = express.Router();
 
         this.route = route;
+    }
+}
+
+export class ProtectedController extends Controller
+{
+    constructor(route: string, sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
+    {
+        super(route);
+
+        this.router.use(express.json());
+
+        this.router.use(protectedRoute(sessionsManager, jsonWebToken, configuration));
     }
 }
 

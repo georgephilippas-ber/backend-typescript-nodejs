@@ -1,8 +1,10 @@
-import express, {NextFunction, Request} from "express";
+import express, {NextFunction, Request, Response} from "express";
 
 import {StatusCodes} from "http-status-codes"
 
-import {plainToInstance} from "class-transformer";
+import jwt from "jsonwebtoken";
+
+import {instanceToPlain, plainToInstance} from "class-transformer";
 import {dtoLoginAgent} from "../../agents/data-transfer-object/data-transfer-object";
 import {AgentsManager} from "../../agents/managers/agents-manager";
 
@@ -14,10 +16,46 @@ import moment from "moment";
 
 import {dtoSession} from "../data-transfer-object/data-transfer-object";
 
-function middlewareProtected(req: Request, res: Response, next: NextFunction)
+export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
 {
+    async function middleware(req: Request, res: Response, next: NextFunction)
+    {
+        let extractedSession: dtoSession | null;
 
+        try
+        {
+            extractedSession = plainToInstance(dtoSession, jsonWebToken.verify(headers(req)[configuration.authenticationHeader()].split(" ")[1]));
+
+            if (!extractedSession || !dtoSession.validate(extractedSession))
+                res.sendStatus(StatusCodes.PARTIAL_CONTENT);
+            else
+            {
+                switch (await sessionsManager.getSessionValidity(extractedSession.sessionId))
+                {
+                    case "nonexistent":
+                    case "expired":
+                        res.sendStatus(StatusCodes.FORBIDDEN);
+                        break;
+                    case "valid":
+                        req.body["session"] = instanceToPlain(extractedSession);
+
+                        await sessionsManager.extend({
+                            id: extractedSession.sessionId,
+                            by: configuration.getSessionDuration("extension")
+                        });
+
+                        next();
+                }
+            }
+        } catch (e)
+        {
+            res.sendStatus(StatusCodes.BAD_REQUEST);
+        }
+    }
+
+    return middleware;
 }
+
 
 export class AuthenticationController extends Controller
 {
@@ -111,7 +149,6 @@ export class AuthenticationController extends Controller
             extractedSession = plainToInstance(dtoSession, this.jsonWebToken.verify(headers(req)[this.configuration.authenticationHeader()].split(" ")[1]));
         } catch (e)
         {
-            console.log(e);
             extractedSession = null;
         }
 
