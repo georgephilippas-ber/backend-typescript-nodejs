@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:4096/sample/sample
-Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoyOCwiaWF0IjoxNjU5MzQ0ODM4fQ.21_MP6mc-nD-CJr7tS5sZkAYgS6-wY4RduWZGdnc2bk
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoyOSwiaWF0IjoxNjU5MzQ1MDk4fQ.umij99oS1m8PianDKg_Z-53GYJ8Kr-NuJYwSDdM44Zo
 
 {
 }
@@ -25,7 +25,7 @@ Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwi
 ###
 POST http://localhost:4096/authentication/logout
 Content-Type: application/json
-Authentication: Bearer 2yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoxNiwiaWF0IjoxNjU5Mjg4NzQ5fQ.hgO92grETCGZfU-ic_64x6p8N_JpRcqUUxMZXWJnZxE
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoyOSwiaWF0IjoxNjU5MzQ1MDk4fQ.umij99oS1m8PianDKg_Z-53GYJ8Kr-NuJYwSDdM44Zo
 
 {
 }
