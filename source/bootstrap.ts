@@ -15,7 +15,9 @@ export async function bootstrap(): Promise<bServer>
 
     const dataProvider: DataProvider = new DataProvider();
     const agentsManager: AgentsManager = new AgentsManager(dataProvider, configuration);
+
     const sessionsManager: SessionsManager = new SessionsManager(agentsManager, dataProvider);
+    await sessionsManager.delete_all();
 
     const agentsSchema: AgentsSchema = new AgentsSchema(agentsManager);
 

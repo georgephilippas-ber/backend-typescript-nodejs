@@ -24,7 +24,7 @@ async function sessionsManager()
     }).then(value => console.log(value));
     await sessionsManager.extend({by: {unit: "hours", quantity: 2}, id: 5}).then(value => console.log(value));
 
-    await sessionsManager.deleteAll(1);
+    await sessionsManager.delete_forUser(1);
 }
 
 async function authenticationController()

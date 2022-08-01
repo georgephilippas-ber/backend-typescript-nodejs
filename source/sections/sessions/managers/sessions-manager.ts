@@ -112,7 +112,7 @@ export class SessionsManager
         return this.dataProvider.fromPrisma().session.delete({where: {id: deleteSesion.id}});
     }
 
-    async deleteAll(agentId: number): Promise<Prisma.BatchPayload>
+    async delete_forUser(agentId: number): Promise<Prisma.BatchPayload>
     {
         return this.dataProvider.fromPrisma().session.deleteMany({
             where:
@@ -122,5 +122,10 @@ export class SessionsManager
                     }
                 }
         });
+    }
+
+    async delete_all(): Promise<Prisma.BatchPayload>
+    {
+        return this.dataProvider.fromPrisma().session.deleteMany({});
     }
 }
