@@ -18,7 +18,7 @@ import {dtoSession} from "../data-transfer-object/data-transfer-object";
 
 export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
 {
-    async function middleware(req: Request, res: Response, next: NextFunction)
+    return async (req: Request, res: Response, next: NextFunction) =>
     {
         let extractedSession: dtoSession | null;
 
@@ -52,8 +52,6 @@ export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: J
             res.sendStatus(StatusCodes.BAD_REQUEST);
         }
     }
-
-    return middleware;
 }
 
 
