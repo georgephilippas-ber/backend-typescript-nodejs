@@ -1,4 +1,4 @@
-import express, {Request} from "express";
+import express, {NextFunction, Request} from "express";
 
 import {StatusCodes} from "http-status-codes"
 
@@ -13,6 +13,11 @@ import {SessionsManager} from "../../sessions/managers/sessions-manager";
 import moment from "moment";
 
 import {dtoSession} from "../data-transfer-object/data-transfer-object";
+
+function middlewareProtected(req: Request, res: Response, next: NextFunction)
+{
+
+}
 
 export class AuthenticationController extends Controller
 {
