@@ -16,16 +16,9 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:4096/sample/sample
-Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoyOSwiaWF0IjoxNjU5MzQ1MDk4fQ.umij99oS1m8PianDKg_Z-53GYJ8Kr-NuJYwSDdM44Zo
-
-{
-}
-
-###
 POST http://localhost:4096/authentication/logout
 Content-Type: application/json
-Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjoyOSwiaWF0IjoxNjU5MzQ1MDk4fQ.umij99oS1m8PianDKg_Z-53GYJ8Kr-NuJYwSDdM44Zo
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjozMCwiaWF0IjoxNjU5MzUxODc2fQ.8FsIAGhZTpam_aP7pTNKU-WCoGivLuVYgzkf8gk_eGI
 
 {
 }
