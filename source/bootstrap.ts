@@ -29,5 +29,5 @@ export async function bootstrap(): Promise<bServer>
 
     const controllers: Controllers = new Controllers([authenticationController]);
 
-    return bServer.createAndStart(graphQLSchema, controllers);
+    return bServer.createAndStart(graphQLSchema, controllers, 0x1000);
 }

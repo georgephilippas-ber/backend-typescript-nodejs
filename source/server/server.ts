@@ -58,7 +58,7 @@ export class bServer
         return this.apolloServer.stop();
     }
 
-    static async createAndStart(graphQLSchema: GraphQLSchema, controllers: Controllers, port: number = 0x1000): Promise<bServer>
+    static async createAndStart(graphQLSchema: GraphQLSchema, controllers: Controllers, port: number): Promise<bServer>
     {
         let bServer_ = new bServer(graphQLSchema, controllers);
 
