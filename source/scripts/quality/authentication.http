@@ -12,13 +12,15 @@ POST http://localhost:4096/authentication/login
 Content-Type: application/json
 
 {
-  "credentials": ["zelma87", "wuhaporemafezewe"]
+  "credentials": [
+    "zelma87",
+    "wuhaporemafezewe"
+  ]
 }
 
 ###
 POST http://localhost:4096/authentication/logout
 Content-Type: application/json
 Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoxNiwic2Vzc2lvbklkIjozMCwiaWF0IjoxNjU5MzUxODc2fQ.8FsIAGhZTpam_aP7pTNKU-WCoGivLuVYgzkf8gk_eGI
-
 {
 }
