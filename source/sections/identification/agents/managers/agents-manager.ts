@@ -1,13 +1,13 @@
-import {DataProvider} from "../../../model/data-provider";
+import {DataProvider} from "../../../../model/data-provider";
 
 import {Agent, Prisma} from "@prisma/client";
 
 import {dtoCreateAgent, dtoDeleteAgent} from "../data-transfer-object/data-transfer-object";
 
-import {Encryption} from "../../../model/encryption/encryption";
+import {Encryption} from "../../../../model/encryption/encryption";
 import {isEmail} from "class-validator";
 import {createHash} from "crypto";
-import {Configuration} from "../../../configuration/configuration";
+import {Configuration} from "../../../../configuration/configuration";
 
 export class AgentsManager
 {

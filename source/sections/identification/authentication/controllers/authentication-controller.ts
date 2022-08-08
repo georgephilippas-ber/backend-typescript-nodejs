@@ -2,15 +2,13 @@ import express, {NextFunction, Request, Response} from "express";
 
 import {StatusCodes} from "http-status-codes"
 
-import jwt from "jsonwebtoken";
-
 import {instanceToPlain, plainToInstance} from "class-transformer";
 import {dtoLoginAgent} from "../../agents/data-transfer-object/data-transfer-object";
 import {AgentsManager} from "../../agents/managers/agents-manager";
 
-import {body, Controller, headers} from "../../../interface/controller";
-import {JSONWebToken} from "../../../model/json-web-token/json-web-token";
-import {Configuration} from "../../../configuration/configuration";
+import {body, Controller, headers} from "../../../../interface/controller";
+import {JSONWebToken} from "../../../../model/json-web-token/json-web-token";
+import {Configuration} from "../../../../configuration/configuration";
 import {SessionsManager} from "../../sessions/managers/sessions-manager";
 import moment from "moment";
 

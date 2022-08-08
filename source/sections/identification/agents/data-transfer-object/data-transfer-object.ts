@@ -1,5 +1,5 @@
 import {isEmail, isArray, isString} from "class-validator";
-import {isBetween} from "../../../model/utilities/utilities";
+import {isBetween} from "../../../../model/utilities/utilities";
 
 export class dtoCreateAgent
 {
