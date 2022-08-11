@@ -4,7 +4,7 @@ import {StatusCodes} from "http-status-codes"
 
 import {instanceToPlain, plainToInstance} from "class-transformer";
 import {dtoLoginAgent} from "../../agents/data-transfer-object/data-transfer-object";
-import {AgentsManager} from "../../agents/managers/agents-manager";
+import {AgentManager} from "../../agents/managers/agent-manager";
 
 import {body, Controller, headers} from "../../../../interface/controller";
 import {JSONWebToken} from "../../../../model/json-web-token/json-web-token";
@@ -55,13 +55,13 @@ export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: J
 
 export class AuthenticationController extends Controller
 {
-    agentsManager: AgentsManager;
+    agentsManager: AgentManager;
     sessionsManager: SessionsManager;
 
     jsonWebToken: JSONWebToken;
     configuration: Configuration;
 
-    constructor(route: string, agentsManager: AgentsManager, sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
+    constructor(route: string, agentsManager: AgentManager, sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
     {
         super(route);
 

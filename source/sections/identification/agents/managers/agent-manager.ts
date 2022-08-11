@@ -2,14 +2,12 @@ import {DataProvider} from "../../../../model/data-provider";
 
 import {Agent, Prisma} from "@prisma/client";
 
-import {dtoCreateAgent, dtoDeleteAgent} from "../data-transfer-object/data-transfer-object";
-
 import {Encryption} from "../../../../model/encryption/encryption";
 import {isEmail} from "class-validator";
 import {createHash} from "crypto";
 import {Configuration} from "../../../../configuration/configuration";
 
-export class AgentsManager
+export class AgentManager
 {
     dataProvider: DataProvider;
     configuration: Configuration;
@@ -20,24 +18,24 @@ export class AgentsManager
         this.configuration = configuration;
     }
 
-    async create(agentCreate: dtoCreateAgent): Promise<Agent | null>
+    async create(credentials: string[]): Promise<Agent | null>
     {
-        if (!dtoCreateAgent.validate(agentCreate))
+        if (!credentials.every(value => value))
             return null;
 
-        switch (agentCreate.credentials.length)
+        switch (credentials.length)
         {
             case 3:
             case 4:
                 const candidateAgent: Prisma.AgentUncheckedCreateInput =
                     {
-                        username: agentCreate.credentials[0],
-                        email: agentCreate.credentials[1],
-                        password: await Encryption.hashPassword_generateSalt(agentCreate.credentials[2], this.configuration.getHashLength_bytes()),
+                        username: credentials[0],
+                        email: credentials[1],
+                        password: await Encryption.hashPassword_generateSalt(credentials[2], this.configuration.getHashLength_bytes()),
                     };
 
-                if (agentCreate.credentials[3])
-                    candidateAgent.passkey = Encryption.hashPasskey(agentCreate.credentials[3]);
+                if (credentials[3])
+                    candidateAgent.passkey = Encryption.hashPasskey(credentials[3]);
 
                 return this.dataProvider.fromPrisma().agent.create({
                     data: candidateAgent
@@ -47,22 +45,22 @@ export class AgentsManager
         }
     }
 
-    async delete(agentDelete: dtoDeleteAgent): Promise<Agent | null>
+    async delete(credential: string): Promise<Agent | null>
     {
-        if (!dtoDeleteAgent.validate(agentDelete))
+        if (!credential)
             return null;
 
-        if (isEmail(agentDelete.credential))
+        if (isEmail(credential))
         {
-            return this.dataProvider.fromPrisma().agent.delete({where: {email: agentDelete.credential}});
+            return this.dataProvider.fromPrisma().agent.delete({where: {email: credential}});
         }
 
-        if (agentDelete.credential.length <= this.configuration.getMaximumUsernameLength_characters())
+        if (credential.length <= this.configuration.getMaximumUsernameLength_characters())
         {
-            return this.dataProvider.fromPrisma().agent.delete({where: {username: agentDelete.credential}});
+            return this.dataProvider.fromPrisma().agent.delete({where: {username: credential}});
         }
 
-        return this.dataProvider.fromPrisma().agent.delete({where: {passkey: createHash("md5").update(agentDelete.credential).digest("hex")}});
+        return this.dataProvider.fromPrisma().agent.delete({where: {passkey: createHash("md5").update(credential).digest("hex")}});
     }
 
     async byId(id: number): Promise<Agent | null>

@@ -1,4 +1,4 @@
-import {AgentsManager} from "../../agents/managers/agents-manager";
+import {AgentManager} from "../../agents/managers/agent-manager";
 import {DataProvider} from "../../../../model/data-provider";
 import {Prisma, Agent, Session} from "@prisma/client";
 
@@ -33,10 +33,10 @@ export class dtoDeleteSession
 
 export class SessionsManager
 {
-    agentsManager: AgentsManager
+    agentsManager: AgentManager
     dataProvider: DataProvider;
 
-    constructor(agentsManager: AgentsManager, dataProvider: DataProvider)
+    constructor(agentsManager: AgentManager, dataProvider: DataProvider)
     {
         this.agentsManager = agentsManager;
         this.dataProvider = dataProvider;

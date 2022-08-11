@@ -1,12 +1,12 @@
 import {gql} from "apollo-server-express";
 import {Schema} from "../../../../interface/graphql-schema";
-import {AgentsManager} from "../managers/agents-manager";
+import {AgentManager} from "../managers/agent-manager";
 
 export class AgentsSchema extends Schema
 {
-    agentsManager: AgentsManager;
+    agentsManager: AgentManager;
 
-    public constructor(agentsManager: AgentsManager)
+    public constructor(agentsManager: AgentManager)
     {
         super();
 

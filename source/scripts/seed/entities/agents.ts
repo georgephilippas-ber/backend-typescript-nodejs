@@ -1,5 +1,5 @@
 import {DataProvider} from "../../../model/data-provider";
-import {AgentsManager} from "../../../sections/identification/agents/managers/agents-manager";
+import {AgentManager} from "../../../sections/identification/agents/managers/agent-manager";
 import {faker} from "@faker-js/faker";
 import {dtoCreateAgent} from "../../../sections/identification/agents/data-transfer-object/data-transfer-object";
 
@@ -7,7 +7,7 @@ import {Configuration} from "../../../configuration/configuration";
 
 export async function seed(cardinality: number)
 {
-    const agentsManager = new AgentsManager(new DataProvider(), new Configuration());
+    const agentsManager = new AgentManager(new DataProvider(), new Configuration());
 
     for (let i_ = 0; i_ < cardinality; i_++)
     {
