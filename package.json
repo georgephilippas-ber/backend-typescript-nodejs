@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node index.ts --watch",
     "test": "jest --verbose=true",
-    "seed": "ts-node source/scripts/seed/seed.ts",
+    "seed": "ts-node source/scripts/seed/seed.ts"
   },
   "repository": {
     "type": "git",
