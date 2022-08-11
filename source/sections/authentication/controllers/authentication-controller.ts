@@ -8,7 +8,7 @@ import {AgentManager} from "../managers/agent-manager";
 import {body, Controller, headers} from "../../../interface/controller";
 import {JSONWebToken} from "../../../model/json-web-token/json-web-token";
 import {Configuration} from "../../../configuration/configuration";
-import {SessionsManager} from "../managers/sessions-manager";
+import {SessionManager} from "../managers/session-manager";
 import moment from "moment";
 
 class dtoSession
@@ -38,7 +38,7 @@ class dtoLogin
     }
 }
 
-export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
+export function protectedRoute(sessionsManager: SessionManager, jsonWebToken: JSONWebToken, configuration: Configuration)
 {
     return async (req: Request, res: Response, next: NextFunction) =>
     {
@@ -80,12 +80,12 @@ export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: J
 export class AuthenticationController extends Controller
 {
     agentsManager: AgentManager;
-    sessionsManager: SessionsManager;
+    sessionsManager: SessionManager;
 
     jsonWebToken: JSONWebToken;
     configuration: Configuration;
 
-    constructor(route: string, agentsManager: AgentManager, sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
+    constructor(route: string, agentsManager: AgentManager, sessionsManager: SessionManager, jsonWebToken: JSONWebToken, configuration: Configuration)
     {
         super(route);
 

@@ -9,13 +9,8 @@ import {Configuration} from "../../../configuration/configuration";
 
 export class AgentManager
 {
-    dataProvider: DataProvider;
-    configuration: Configuration;
-
-    constructor(dataProvider: DataProvider, configuration: Configuration)
+    constructor(private dataProvider: DataProvider, private configuration: Configuration)
     {
-        this.dataProvider = dataProvider;
-        this.configuration = configuration;
     }
 
     async create(credentials: string[]): Promise<Agent | null>

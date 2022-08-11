@@ -31,15 +31,10 @@ export class dtoDeleteSession
     id!: number;
 }
 
-export class SessionsManager
+export class SessionManager
 {
-    agentsManager: AgentManager
-    dataProvider: DataProvider;
-
-    constructor(agentsManager: AgentManager, dataProvider: DataProvider)
+    constructor(private agentsManager: AgentManager, private dataProvider: DataProvider)
     {
-        this.agentsManager = agentsManager;
-        this.dataProvider = dataProvider;
     }
 
     async byId(id: number): Promise<Session | null>

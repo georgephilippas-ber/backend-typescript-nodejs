@@ -6,7 +6,7 @@ import {GraphQLSchema} from "./interface/graphql-schema";
 import {AuthenticationController} from "./sections/authentication/controllers/authentication-controller";
 import {Controllers} from "./interface/controller";
 import {Configuration} from "./configuration/configuration";
-import {SessionsManager} from "./sections/authentication/managers/sessions-manager";
+import {SessionManager} from "./sections/authentication/managers/session-manager";
 import {JSONWebToken} from "./model/json-web-token/json-web-token";
 
 export async function bootstrap(): Promise<bServer>
@@ -16,7 +16,7 @@ export async function bootstrap(): Promise<bServer>
     const dataProvider: DataProvider = new DataProvider();
     const agentsManager: AgentManager = new AgentManager(dataProvider, configuration);
 
-    const sessionsManager: SessionsManager = new SessionsManager(agentsManager, dataProvider);
+    const sessionsManager: SessionManager = new SessionManager(agentsManager, dataProvider);
     await sessionsManager.delete_all();
 
     const agentSchema: AgentSchema = new AgentSchema(agentsManager);
