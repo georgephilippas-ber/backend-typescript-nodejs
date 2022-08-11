@@ -20,8 +20,6 @@ model Agent {
   password String
   passkey  String?   @unique
   Session  Session[]
-
-  Profile Profile?
 }
 
 model Session {
@@ -38,23 +36,9 @@ model Profile {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  forename String
-  surname  String
-
+  forename  String
+  surname   String
   birthdate DateTime
-  location  String
 
-  agent   Agent @relation(fields: [agentId], references: [id])
-  agentId Int   @unique
-
-  avatar   Avatar @relation(fields: [avatarId], references: [id])
-  avatarId Int    @unique
-}
-
-model Avatar {
-  id      Int    @id @default(autoincrement())
-  storage String
-
-  address String
-  Profile Profile?
+  location String
 }
