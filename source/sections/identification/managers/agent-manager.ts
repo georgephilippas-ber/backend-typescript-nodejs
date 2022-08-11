@@ -1,11 +1,11 @@
-import {DataProvider} from "../../../../model/data-provider";
+import {DataProvider} from "../../../model/data-provider";
 
 import {Agent, Prisma} from "@prisma/client";
 
-import {Encryption} from "../../../../model/encryption/encryption";
+import {Encryption} from "../../../model/encryption/encryption";
 import {isEmail} from "class-validator";
 import {createHash} from "crypto";
-import {Configuration} from "../../../../configuration/configuration";
+import {Configuration} from "../../../configuration/configuration";
 
 export class AgentManager
 {

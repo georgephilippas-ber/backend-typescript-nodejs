@@ -1,4 +1,4 @@
-import {Schema} from "../../../../interface/graphql-schema";
+import {Schema} from "../../../interface/graphql-schema";
 import {gql} from "apollo-server-express";
 
 export class SessionsSchema extends Schema

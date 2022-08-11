@@ -1,6 +1,6 @@
 import express, {Express, Request, Router} from "express";
-import {protectedRoute} from "../sections/identification/authentication/controllers/authentication-controller";
-import {SessionsManager} from "../sections/identification/sessions/managers/sessions-manager";
+import {protectedRoute} from "../sections/identification/controllers/authentication-controller";
+import {SessionsManager} from "../sections/identification/managers/sessions-manager";
 import {JSONWebToken} from "../model/json-web-token/json-web-token";
 import {Configuration} from "../configuration/configuration";
 

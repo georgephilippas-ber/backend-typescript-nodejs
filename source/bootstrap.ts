@@ -1,12 +1,12 @@
 import {bServer} from "./server/server";
 import {DataProvider} from "./model/data-provider";
-import {AgentManager} from "./sections/identification/agents/managers/agent-manager";
-import {AgentsSchema} from "./sections/identification/agents/schema/agents-schema";
+import {AgentManager} from "./sections/identification/managers/agent-manager";
+import {AgentSchema} from "./sections/identification/graphql-schema/agent-schema";
 import {GraphQLSchema} from "./interface/graphql-schema";
-import {AuthenticationController} from "./sections/identification/authentication/controllers/authentication-controller";
+import {AuthenticationController} from "./sections/identification/controllers/authentication-controller";
 import {Controllers} from "./interface/controller";
 import {Configuration} from "./configuration/configuration";
-import {SessionsManager} from "./sections/identification/sessions/managers/sessions-manager";
+import {SessionsManager} from "./sections/identification/managers/sessions-manager";
 import {JSONWebToken} from "./model/json-web-token/json-web-token";
 
 export async function bootstrap(): Promise<bServer>
@@ -19,7 +19,7 @@ export async function bootstrap(): Promise<bServer>
     const sessionsManager: SessionsManager = new SessionsManager(agentsManager, dataProvider);
     await sessionsManager.delete_all();
 
-    const agentsSchema: AgentsSchema = new AgentsSchema(agentsManager);
+    const agentsSchema: AgentSchema = new AgentSchema(agentsManager);
 
     const graphQLSchema = new GraphQLSchema([agentsSchema]);
 

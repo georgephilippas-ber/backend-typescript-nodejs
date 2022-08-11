@@ -3,16 +3,40 @@ import express, {NextFunction, Request, Response} from "express";
 import {StatusCodes} from "http-status-codes"
 
 import {instanceToPlain, plainToInstance} from "class-transformer";
-import {dtoLoginAgent} from "../../agents/data-transfer-object/data-transfer-object";
-import {AgentManager} from "../../agents/managers/agent-manager";
+import {AgentManager} from "../managers/agent-manager";
 
-import {body, Controller, headers} from "../../../../interface/controller";
-import {JSONWebToken} from "../../../../model/json-web-token/json-web-token";
-import {Configuration} from "../../../../configuration/configuration";
-import {SessionsManager} from "../../sessions/managers/sessions-manager";
+import {body, Controller, headers} from "../../../interface/controller";
+import {JSONWebToken} from "../../../model/json-web-token/json-web-token";
+import {Configuration} from "../../../configuration/configuration";
+import {SessionsManager} from "../managers/sessions-manager";
 import moment from "moment";
 
-import {dtoSession} from "../data-transfer-object/data-transfer-object";
+class dtoSession
+{
+    agentId!: number;
+    sessionId!: number;
+
+    constructor(agentId: number, sessionId: number)
+    {
+        this.agentId = agentId;
+        this.sessionId = sessionId;
+    }
+
+    validate()
+    {
+        return !!(this.agentId && this.sessionId);
+    }
+}
+
+class dtoLogin
+{
+    credentials!: string[];
+
+    validate()
+    {
+        return Array.isArray(this.credentials) && this.credentials.every(value => value);
+    }
+}
 
 export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: JSONWebToken, configuration: Configuration)
 {
@@ -24,7 +48,7 @@ export function protectedRoute(sessionsManager: SessionsManager, jsonWebToken: J
         {
             extractedSession = plainToInstance(dtoSession, jsonWebToken.verify(headers(req)[configuration.authenticationHeader()].split(" ")[1]));
 
-            if (!extractedSession || !dtoSession.validate(extractedSession))
+            if (!extractedSession || !extractedSession.validate())
                 res.sendStatus(StatusCodes.PARTIAL_CONTENT);
             else
             {
@@ -81,9 +105,9 @@ export class AuthenticationController extends Controller
     {
         this.router.post("/login", async (req, res) =>
         {
-            let agentLogin: dtoLoginAgent = plainToInstance(dtoLoginAgent, body(req));
+            let agentLogin: dtoLogin = plainToInstance(dtoLogin, body(req));
 
-            if (!dtoLoginAgent.validate(agentLogin))
+            if (!agentLogin.validate())
                 res.sendStatus(StatusCodes.BAD_REQUEST)
             else
             {
@@ -148,12 +172,9 @@ export class AuthenticationController extends Controller
             extractedSession = null;
         }
 
-        if (extractedSession && dtoSession.validate(extractedSession))
-            return {agentId: extractedSession.agentId, sessionId: extractedSession.sessionId};
+        if (extractedSession && extractedSession.validate())
+            return new dtoSession(extractedSession.agentId, extractedSession.sessionId);
         else
             return null;
     }
 }
-
-//TODO: authenticationMiddleware function
-//TODO: protected controllers: use middleware by default

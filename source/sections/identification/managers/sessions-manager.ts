@@ -1,5 +1,5 @@
-import {AgentManager} from "../../agents/managers/agent-manager";
-import {DataProvider} from "../../../../model/data-provider";
+import {AgentManager} from "./agent-manager";
+import {DataProvider} from "../../../model/data-provider";
 import {Prisma, Agent, Session} from "@prisma/client";
 
 import moment, {DurationInputArg2} from "moment";
