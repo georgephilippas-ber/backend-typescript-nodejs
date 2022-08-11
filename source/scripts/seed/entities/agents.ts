@@ -1,5 +1,5 @@
 import {DataProvider} from "../../../model/data-provider";
-import {AgentManager} from "../../../sections/identification/managers/agent-manager";
+import {AgentManager} from "../../../sections/authentication/managers/agent-manager";
 import {faker} from "@faker-js/faker";
 
 import {Configuration} from "../../../configuration/configuration";

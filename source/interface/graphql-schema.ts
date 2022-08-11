@@ -2,19 +2,13 @@ import {mergeResolvers, mergeTypeDefs} from "@graphql-tools/merge";
 import {gql} from "apollo-server-express";
 import {faker} from "@faker-js/faker";
 
-export type resolverType =
-    {
-        [identifier in string]: (parent: any, context: any, args: any, info: any) => any
-    }
-
-
 export abstract class Schema
 {
     protected constructor()
     {
     }
 
-    abstract resolver(): resolverType
+    abstract resolver(): any
 
     abstract typeDefs(): any
 }
