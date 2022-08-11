@@ -8,6 +8,7 @@ import {Controllers} from "./interface/controller";
 import {Configuration} from "./configuration/configuration";
 import {SessionManager} from "./sections/authentication/managers/session-manager";
 import {JSONWebToken} from "./model/json-web-token/json-web-token";
+import {ProfileManager} from "./sections/profile/managers/profile-manager";
 
 export async function bootstrap(): Promise<bServer>
 {
@@ -18,6 +19,8 @@ export async function bootstrap(): Promise<bServer>
 
     const sessionsManager: SessionManager = new SessionManager(agentsManager, dataProvider);
     await sessionsManager.delete_all();
+
+    const profileManager: ProfileManager = new ProfileManager(dataProvider);
 
     const agentSchema: AgentSchema = new AgentSchema(agentsManager);
 
