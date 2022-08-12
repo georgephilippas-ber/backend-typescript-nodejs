@@ -1,16 +1,17 @@
 import {DataProvider} from "../../../model/data-provider";
 import {Profile} from "@prisma/client";
 
-export type profileCreate_type =
-    {
-        forename: string;
-        surname: string;
-        birthdate: string | Date;
-        location: string;
-        agentId: number;
+export class profileCreate_class
+{
+    forename: string;
+    surname: string;
+    birthdate: string | Date;
+    location: string;
+    agentId: number;
 
-        avatarId?: number;
-    }
+    avatarId?: number;
+    avatarCreate?: avatarCreate_type
+}
 
 export type avatarCreate_type =
     {
@@ -24,9 +25,9 @@ export class ProfileManager
     {
     }
 
-    async create(profileCreate: profileCreate_type, avatarCreate: avatarCreate_type | null): Promise<Profile | null>
+    async create(profileCreate: profileCreate_class): Promise<Profile | null>
     {
-        if (!(profileCreate.avatarId || avatarCreate))
+        if (!(profileCreate.avatarId || profileCreate.avatarCreate))
             return null;
 
         return this.dataProvider.fromPrisma().profile.create({
@@ -39,10 +40,14 @@ export class ProfileManager
                             id: profileCreate.agentId
                         }
                 },
-                avatar: !avatarCreate ? {connect: {id: profileCreate.avatarId}} : {
+                avatar: !profileCreate.avatarCreate ? {
+                    connect: {
+                        id: profileCreate.avatarId
+                    }
+                } : {
                     create: {
-                        storage: avatarCreate.storage,
-                        address: avatarCreate.address
+                        storage: profileCreate.avatarCreate.storage,
+                        address: profileCreate.avatarCreate.address
                     }
                 }
             }
@@ -51,6 +56,6 @@ export class ProfileManager
 
     delete_all()
     {
-        this.dataProvider.fromPrisma().profile.deleteMany({where: {forename: "forename"}});
+        this.dataProvider.fromPrisma().profile.deleteMany({});
     }
 }
