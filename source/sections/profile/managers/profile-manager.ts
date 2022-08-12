@@ -1,25 +1,18 @@
 import {DataProvider} from "../../../model/data-provider";
 import {Profile} from "@prisma/client";
 
-type avatarCreate_type =
-    {
-        storage: "local" | "remote";
-        address: string;
-    }
-
-type profileCreate_type =
-    {
-        forename: string;
-        surname: string;
-        birthdate: Date;
-        location: string;
-        agentId: number;
-    }
-
-
-function validate_profileCreate(profileCreate: profileCreate_type)
+export class profileCreate_class
 {
-    return !!(profileCreate.forename && profileCreate.surname && profileCreate.birthdate && profileCreate.location);
+    forename: string;
+    surname: string;
+    birthdate: string | Date;
+    location: string;
+    agentId: number;
+    avatar:
+        {
+            storage: "local" | "remote";
+            address: string;
+        }
 }
 
 export class ProfileManager
@@ -28,22 +21,16 @@ export class ProfileManager
     {
     }
 
-    async create(profileCreate: profileCreate_type, avatarCreate: avatarCreate_type): Promise<Profile | null>
+    async create(profileCreate: profileCreate_class): Promise<Profile | null>
     {
-        if (!validate_profileCreate(profileCreate))
-            return null;
-        else
-        {
-
-        }
         return this.dataProvider.fromPrisma().profile.create({
             data: {
                 forename: profileCreate.forename, surname: profileCreate.surname, birthdate: profileCreate.birthdate,
                 location: profileCreate.location, avatar: {
                     create:
                         {
-                            storage: avatarCreate.storage,
-                            address: avatarCreate.address
+                            storage: profileCreate.avatar.storage,
+                            address: profileCreate.avatar.address
                         }
                 }, agent: {
                     connect:
@@ -53,5 +40,10 @@ export class ProfileManager
                 }
             }
         })
+    }
+
+    delete_all()
+    {
+        this.dataProvider.fromPrisma().profile.deleteMany({where: {forename: "forename"}});
     }
 }

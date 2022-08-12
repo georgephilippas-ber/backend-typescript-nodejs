@@ -1,0 +1,19 @@
+### Send POST request with json body
+POST http://localhost:4096/profile/create
+Content-Type: application/json
+
+{
+  "forename": "forename",
+  "surname": "forename",
+  "birthdate": "000",
+  "location": "30, 0",
+  "agentId": 12,
+  "avatar":
+  {
+    "storage": "local",
+    "address": "point2.jpg"
+  }
+}
+
+###
+DELETE http://localhost:4096/profile/delete

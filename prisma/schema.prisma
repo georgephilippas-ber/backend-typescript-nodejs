@@ -19,8 +19,8 @@ model Agent {
 
   password String
   passkey  String?   @unique
-  Session  Session[]
 
+  Session  Session[]
   Profile Profile?
 }
 
@@ -45,11 +45,10 @@ model Profile {
 
   location String
 
-  agent   Agent @relation(fields: [agentId], references: [id])
+  agent   Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
   agentId Int   @unique
 
-  avatar   Avatar @relation(fields: [avatarId], references: [id])
-  avatarId Int    @unique
+  avatar Avatar?
 }
 
 model Avatar {
@@ -58,5 +57,6 @@ model Avatar {
   storage String
   address String
 
-  Profile Profile?
+  Profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId Int     @unique
 }

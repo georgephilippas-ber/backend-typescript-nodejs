@@ -9,28 +9,30 @@ import {Configuration} from "./configuration/configuration";
 import {SessionManager} from "./sections/authentication/managers/session-manager";
 import {JSONWebToken} from "./model/json-web-token/json-web-token";
 import {ProfileManager} from "./sections/profile/managers/profile-manager";
+import {ProfileController} from "./sections/profile/controllers/profile-controller";
 
 export async function bootstrap(): Promise<bServer>
 {
     const configuration: Configuration = new Configuration();
 
     const dataProvider: DataProvider = new DataProvider();
-    const agentsManager: AgentManager = new AgentManager(dataProvider, configuration);
+    const agentManager: AgentManager = new AgentManager(dataProvider, configuration);
 
-    const sessionsManager: SessionManager = new SessionManager(agentsManager, dataProvider);
-    await sessionsManager.delete_all();
+    const sessionManager: SessionManager = new SessionManager(agentManager, dataProvider);
+    await sessionManager.delete_all();
 
     const profileManager: ProfileManager = new ProfileManager(dataProvider);
 
-    const agentSchema: AgentSchema = new AgentSchema(agentsManager);
+    const agentSchema: AgentSchema = new AgentSchema(agentManager);
 
     const graphQLSchema = new GraphQLSchema([agentSchema]);
 
     const jsonWebToken: JSONWebToken = new JSONWebToken(configuration.getSecretOrPrivateKey());
 
-    const authenticationController = new AuthenticationController("/authentication", agentsManager, sessionsManager, jsonWebToken, configuration);
+    const authenticationController = new AuthenticationController("/authentication", agentManager, sessionManager, jsonWebToken, configuration);
+    const profileController = new ProfileController("/profile", profileManager);
 
-    const controllers: Controllers = new Controllers([authenticationController]);
+    const controllers: Controllers = new Controllers([authenticationController, profileController]);
 
     return bServer.createAndStart(graphQLSchema, controllers, 0x1000);
 }
