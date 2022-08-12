@@ -7,7 +7,7 @@ Content-Type: application/json
   "surname": "forename",
   "birthdate": "000",
   "location": "30, 0",
-  "agentId": 12,
+  "agentId": 2,
   "avatar":
   {
     "storage": "local",

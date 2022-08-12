@@ -1,19 +1,22 @@
 import {DataProvider} from "../../../model/data-provider";
 import {Profile} from "@prisma/client";
 
-export class profileCreate_class
-{
-    forename: string;
-    surname: string;
-    birthdate: string | Date;
-    location: string;
-    agentId: number;
-    avatar:
-        {
-            storage: "local" | "remote";
-            address: string;
-        }
-}
+export type profileCreate_type =
+    {
+        forename: string;
+        surname: string;
+        birthdate: string | Date;
+        location: string;
+        agentId: number;
+
+        avatarId?: number;
+    }
+
+export type avatarCreate_type =
+    {
+        storage: "local" | "remote",
+        address: string;
+    }
 
 export class ProfileManager
 {
@@ -21,22 +24,26 @@ export class ProfileManager
     {
     }
 
-    async create(profileCreate: profileCreate_class): Promise<Profile | null>
+    async create(profileCreate: profileCreate_type, avatarCreate: avatarCreate_type | null): Promise<Profile | null>
     {
+        if (!(profileCreate.avatarId || avatarCreate))
+            return null;
+
         return this.dataProvider.fromPrisma().profile.create({
             data: {
                 forename: profileCreate.forename, surname: profileCreate.surname, birthdate: profileCreate.birthdate,
-                location: profileCreate.location, avatar: {
-                    create:
-                        {
-                            storage: profileCreate.avatar.storage,
-                            address: profileCreate.avatar.address
-                        }
-                }, agent: {
+                location: profileCreate.location,
+                agent: {
                     connect:
                         {
                             id: profileCreate.agentId
                         }
+                },
+                avatar: !avatarCreate ? {connect: {id: profileCreate.avatarId}} : {
+                    create: {
+                        storage: avatarCreate.storage,
+                        address: avatarCreate.address
+                    }
                 }
             }
         })
